@@ -18,8 +18,59 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section with Bento Grid */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white overflow-hidden">
+      {/* Navigation Bar */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm">
+        <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <div className="flex items-center gap-2">
+              <div className="text-2xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                NOAH
+              </div>
+              <span className="text-xs text-gray-500 font-medium">Emergency Kit</span>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-8">
+              <a href="#" className="text-gray-900 font-medium hover:text-blue-600 transition-colors">
+                Home
+              </a>
+              <a href="#products" className="text-gray-600 font-medium hover:text-blue-600 transition-colors">
+                Products
+              </a>
+              <a href="#waitlist" className="text-gray-600 font-medium hover:text-blue-600 transition-colors">
+                About
+              </a>
+              <a href="#waitlist" className="text-gray-600 font-medium hover:text-blue-600 transition-colors">
+                Contact
+              </a>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex items-center gap-3">
+              <a
+                href="#waitlist"
+                className="hidden sm:inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
+              >
+                <span>Đăng ký ngay</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
+
+              {/* Mobile Menu Button */}
+              <button className="md:hidden p-2 text-gray-600 hover:text-blue-600 transition-colors">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      {/* Hero Section - Split Layout */}
+      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white overflow-hidden pt-20">
         {/* Animated background pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -36,80 +87,235 @@ export default function Home() {
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20">
-          <div className="max-w-6xl mx-auto">
-            {/* Bento Grid Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-              {/* Main Title Box */}
-              <div className="lg:col-span-8 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-3xl p-12 border border-white/20">
-                <div className="inline-block bg-blue-500/30 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                  Emergency Flood Kit
+          <div className="max-w-7xl mx-auto">
+            {/* Two Column Split Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Left Side - Branding & Message */}
+              <div className="space-y-8">
+                {/* Logo/Brand */}
+                <div className="space-y-4">
+                  <div className="inline-block bg-blue-500/30 backdrop-blur-sm px-5 py-2 rounded-full text-sm font-semibold border border-blue-400/30">
+                    Emergency Flood Kit
+                  </div>
+                  <h1 className="text-7xl md:text-8xl font-black bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent leading-tight">
+                    NOAH
+                  </h1>
                 </div>
-                <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                  NOAH
-                </h1>
-                <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-blue-100">
-                  Bộ Cứu Hộ Khẩn Cấp
-                </h2>
-                <p className="text-xl text-blue-50 mb-8 leading-relaxed max-w-2xl">
-                  Được tạo nên để bảo vệ sự sống giữa dòng lũ. Tích hợp GPS, thực phẩm, lọc nước và thiết bị sinh tồn.
-                </p>
-                <div className="flex flex-wrap gap-4">
+
+                {/* Slogan & Positive Message */}
+                <div className="space-y-6">
+                  <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+                    Hy vọng giữa dòng lũ
+                  </h2>
+                  <p className="text-xl md:text-2xl text-blue-100 leading-relaxed font-light">
+                    Bảo vệ những gì quan trọng nhất - gia đình và sự sống của bạn
+                  </p>
+                  <div className="flex items-start gap-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+                    <div className="text-3xl">✨</div>
+                    <div>
+                      <p className="text-blue-50 leading-relaxed">
+                        Được thiết kế đặc biệt cho điều kiện lũ lụt tại Việt Nam. Tích hợp GPS, lọc nước, thực phẩm và thiết bị sinh tồn thiết yếu.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-wrap gap-4 pt-4">
                   <a
                     href="#products"
-                    className="inline-block bg-white text-blue-900 px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg"
+                    className="inline-flex items-center gap-2 bg-white text-blue-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-50 transition-all transform hover:scale-105 shadow-2xl"
                   >
-                    Khám phá sản phẩm
+                    <span>Khám phá sản phẩm</span>
+                    <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                      <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
                   </a>
                   <a
                     href="#waitlist"
-                    className="inline-block bg-blue-600/30 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-600/50 transition-all"
+                    className="inline-flex items-center gap-2 bg-blue-600/30 backdrop-blur-sm border-2 border-white/40 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-600/50 hover:border-white/60 transition-all"
                   >
                     Đăng ký ngay
                   </a>
                 </div>
+
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 gap-4 pt-4">
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5">
+                    <div className="text-4xl font-bold text-blue-300 mb-1">98%</div>
+                    <div className="text-sm text-blue-200">thiên tai ở VN do bão lũ</div>
+                  </div>
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5">
+                    <div className="text-4xl font-bold text-blue-300 mb-1">70%</div>
+                    <div className="text-sm text-blue-200">dân số VN có nguy cơ</div>
+                  </div>
+                </div>
               </div>
 
-              {/* Stats Boxes */}
-              <div className="lg:col-span-4 grid grid-rows-2 gap-4">
-                <div className="bg-gradient-to-br from-blue-500/30 to-blue-600/30 backdrop-blur-lg rounded-3xl p-8 border border-white/20 flex flex-col justify-center">
-                  <div className="text-5xl font-bold mb-2">98%</div>
-                  <div className="text-blue-100">thiên tai ở VN do bão lũ gây ra</div>
-                </div>
-                <div className="bg-gradient-to-br from-blue-600/30 to-blue-700/30 backdrop-blur-lg rounded-3xl p-8 border border-white/20 flex flex-col justify-center">
-                  <div className="text-5xl font-bold mb-2">70%</div>
-                  <div className="text-blue-100">dân số VN có nguy cơ thiên tai</div>
-                </div>
-              </div>
+              {/* Right Side - Product Mockups with Floating Elements */}
+              <div className="relative lg:h-[700px] flex items-center justify-center">
+                {/* Floating Elements */}
+                <div className="absolute inset-0">
+                  {/* Large floating circle */}
+                  <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-br from-cyan-400/30 to-blue-500/30 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '3s' }}></div>
 
-              {/* Feature Cards */}
-              <div className="lg:col-span-3 bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 backdrop-blur-lg rounded-3xl p-6 border border-white/20">
-                <div className="text-4xl mb-4">🧭</div>
-                <h3 className="text-xl font-bold mb-2">GPS Định vị</h3>
-                <p className="text-blue-100 text-sm">Tìm kiếm cứu hộ nhanh chóng</p>
-              </div>
-              <div className="lg:col-span-3 bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 backdrop-blur-lg rounded-3xl p-6 border border-white/20">
-                <div className="text-4xl mb-4">💧</div>
-                <h3 className="text-xl font-bold mb-2">Lọc nước</h3>
-                <p className="text-blue-100 text-sm">LifeStraw chính hãng</p>
-              </div>
-              <div className="lg:col-span-3 bg-gradient-to-br from-amber-500/20 to-amber-600/20 backdrop-blur-lg rounded-3xl p-6 border border-white/20">
-                <div className="text-4xl mb-4">🍱</div>
-                <h3 className="text-xl font-bold mb-2">Lương khô MRE</h3>
-                <p className="text-blue-100 text-sm">Thực phẩm quân sự chuẩn</p>
-              </div>
-              <div className="lg:col-span-3 bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-lg rounded-3xl p-6 border border-white/20">
-                <div className="text-4xl mb-4">💡</div>
-                <h3 className="text-xl font-bold mb-2">Đèn chiếu sáng</h3>
-                <p className="text-blue-100 text-sm">Cree Zoom chuyên dụng</p>
+                  {/* Small floating badges */}
+                  <div className="absolute top-20 left-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 shadow-2xl transform rotate-[-5deg] hover:rotate-0 transition-transform animate-float">
+                    <div className="flex items-center gap-3">
+                      <div className="text-3xl">🧭</div>
+                      <div>
+                        <div className="text-sm font-bold">GPS Tracking</div>
+                        <div className="text-xs text-blue-200">Real-time location</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-32 left-5 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 shadow-2xl transform rotate-[5deg] hover:rotate-0 transition-transform animate-float" style={{ animationDelay: '1s' }}>
+                    <div className="flex items-center gap-3">
+                      <div className="text-3xl">💧</div>
+                      <div>
+                        <div className="text-sm font-bold">LifeStraw</div>
+                        <div className="text-xs text-blue-200">Clean water</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="absolute top-1/3 right-5 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 shadow-2xl transform rotate-[8deg] hover:rotate-0 transition-transform animate-float" style={{ animationDelay: '2s' }}>
+                    <div className="flex items-center gap-3">
+                      <div className="text-3xl">🍱</div>
+                      <div>
+                        <div className="text-sm font-bold">MRE Food</div>
+                        <div className="text-xs text-blue-200">Military grade</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Main Product Images */}
+                <div className="relative z-10 w-full max-w-lg mx-auto">
+                  {/* Primary mockup - larger, in front */}
+                  <div className="relative transform hover:scale-105 transition-transform duration-500 animate-float-slow">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-400/40 to-purple-500/40 rounded-3xl blur-2xl animate-pulse"></div>
+                    <img
+                      src="/mock-1.png"
+                      alt="Noah Emergency Kit - Main View"
+                      className="relative rounded-3xl shadow-2xl border-4 border-white/20 w-full"
+                    />
+                  </div>
+
+                  {/* Secondary mockup - smaller, offset behind */}
+                  <div className="absolute -bottom-10 -right-10 w-3/5 transform rotate-6 hover:rotate-3 transition-transform duration-500 animate-float" style={{ animationDelay: '1.5s' }}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/40 to-blue-500/40 rounded-3xl blur-xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                    <img
+                      src="/mock-2.png"
+                      alt="Noah Emergency Kit - Detail View"
+                      className="relative rounded-2xl shadow-2xl border-4 border-white/20 w-full"
+                    />
+                  </div>
+                </div>
+
+                {/* Floating accent elements */}
+                <div className="absolute top-1/4 left-1/4 w-20 h-20 bg-yellow-400/20 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '2s', animationDelay: '0.5s' }}></div>
+                <div className="absolute bottom-1/4 right-1/3 w-16 h-16 bg-emerald-400/20 rounded-full blur-xl animate-pulse" style={{ animationDuration: '2.5s', animationDelay: '1s' }}></div>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <svg className="w-6 h-6 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
             <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
           </svg>
+        </div>
+      </section>
+
+      {/* Features Highlight Section */}
+      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <span className="inline-block bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                Tính năng nổi bật
+              </span>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Trang bị đầy đủ để sinh tồn
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Mỗi bộ kit được thiết kế kỹ lưỡng với công nghệ tiên tiến
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* GPS Feature */}
+              <div className="group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-8 border-2 border-emerald-200 hover:border-emerald-400 transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+                <div className="bg-emerald-500 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                  🧭
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">GPS Định vị</h3>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Thiết bị định vị GPS Beitan BE-252i giúp đội cứu hộ tìm thấy bạn nhanh chóng trong mọi tình huống khẩn cấp.
+                </p>
+                <div className="inline-flex items-center gap-2 text-emerald-600 font-semibold">
+                  <span>Tìm hiểu thêm</span>
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Water Filter Feature */}
+              <div className="group bg-gradient-to-br from-cyan-50 to-blue-50 rounded-3xl p-8 border-2 border-cyan-200 hover:border-cyan-400 transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+                <div className="bg-cyan-500 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                  💧
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Lọc nước LifeStraw</h3>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Ống lọc nước LifeStraw chính hãng từ VesterGaard, lọc 99.99% vi khuẩn và ký sinh trùng có hại.
+                </p>
+                <div className="inline-flex items-center gap-2 text-cyan-600 font-semibold">
+                  <span>Tìm hiểu thêm</span>
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                  </svg>
+                </div>
+              </div>
+
+              {/* MRE Food Feature */}
+              <div className="group bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 border-2 border-amber-200 hover:border-amber-400 transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+                <div className="bg-amber-500 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                  🍱
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Lương khô MRE</h3>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Thực phẩm quân sự BB702 tiêu chuẩn, bảo quản lâu dài, cung cấp đầy đủ dinh dưỡng cần thiết.
+                </p>
+                <div className="inline-flex items-center gap-2 text-amber-600 font-semibold">
+                  <span>Tìm hiểu thêm</span>
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Flashlight Feature */}
+              <div className="group bg-gradient-to-br from-purple-50 to-indigo-50 rounded-3xl p-8 border-2 border-purple-200 hover:border-purple-400 transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+                <div className="bg-purple-500 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                  💡
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Đèn chiếu sáng</h3>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Đèn pin Cree Zoom chuyên dụng với khả năng chiếu sáng mạnh mẽ, chịu nước tốt trong mọi điều kiện.
+                </p>
+                <div className="inline-flex items-center gap-2 text-purple-600 font-semibold">
+                  <span>Tìm hiểu thêm</span>
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
