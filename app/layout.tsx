@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Roboto, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/components/context/LanguageContext";
 
 const roboto = Roboto({
 	subsets: ["latin", "vietnamese"],
@@ -34,7 +35,7 @@ export default function RootLayout({
 		<html lang="vi">
 			<body className={`${font.variable} antialiased`}>
 				<Analytics />
-				{children}
+				<LanguageProvider>{children}</LanguageProvider>
 			</body>
 		</html>
 	);
