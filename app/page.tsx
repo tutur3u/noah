@@ -1,1239 +1,1713 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 type Language = 'vi' | 'en';
 
 const translations = {
   vi: {
     nav: {
-      logo: 'Kit Cứu Hộ',
       home: 'Trang chủ',
       products: 'Sản phẩm',
       about: 'Giới thiệu',
       contact: 'Liên hệ',
-      cta: 'Đăng ký ngay'
     },
     hero: {
-      badge: 'Emergency Flood Kit',
-      title1: 'Hy vọng giữa dòng lũ',
-      subtitle: 'Bảo vệ những gì quan trọng nhất - gia đình và sự sống của bạn',
-      description: 'Được thiết kế đặc biệt cho điều kiện lũ lụt tại Việt Nam. Tích hợp GPS, lọc nước, thực phẩm và thiết bị sinh tồn thiết yếu.',
-      exploreBtn: 'Khám phá sản phẩm',
-      registerBtn: 'Đăng ký ngay',
-      stat1: 'thiên tai ở VN do bão lũ',
-      stat2: 'dân số VN có nguy cơ',
-      gps: 'GPS Tracking',
-      gpsDesc: 'Real-time location',
-      lifestraw: 'LifeStraw',
-      lifestawDesc: 'Clean water',
-      mre: 'MRE Food',
-      mreDesc: 'Military grade'
+      tagline: 'Kit Cứu Hộ Khẩn Cấp',
+      title1: 'Đừng Để',
+      title2: 'Quá Muộn',
+      subtitle: 'Mỗi năm, hàng trăm người Việt Nam mất mạng vì lũ lụt. Đừng để gia đình bạn trở thành con số thống kê tiếp theo.',
+      description: 'Kit cứu hộ NOAH được thiết kế từ nỗi đau của những mất mát. Mỗi tính năng đều được nghiên cứu từ thực tế lũ lụt tại Việt Nam.',
+      cta: 'Tìm hiểu ngay',
+      stats: {
+        disasters: 'thiên tai từ bão lũ',
+        population: 'dân số có nguy cơ',
+      },
     },
-    features: {
-      badge: 'Tính năng nổi bật',
-      title: 'Trang bị đầy đủ để sinh tồn',
-      subtitle: 'Mỗi bộ kit được thiết kế kỹ lưỡng với công nghệ tiên tiến',
-      gpsTitle: 'GPS Định vị',
-      gpsDesc: 'Thiết bị định vị GPS Beitan BE-252i giúp đội cứu hộ tìm thấy bạn nhanh chóng trong mọi tình huống khẩn cấp.',
-      waterTitle: 'Lọc nước LifeStraw',
-      waterDesc: 'Ống lọc nước LifeStraw chính hãng từ VesterGaard, lọc 99.99% vi khuẩn và ký sinh trùng có hại.',
-      mreTitle: 'Lương khô MRE',
-      mreDesc: 'Thực phẩm quân sự BB702 tiêu chuẩn, bảo quản lâu dài, cung cấp đầy đủ dinh dưỡng cần thiết.',
-      flashlightTitle: 'Đèn chiếu sáng',
-      flashlightDesc: 'Đèn pin Cree Zoom chuyên dụng với khả năng chiếu sáng mạnh mẽ, chịu nước tốt trong mọi điều kiện.',
-      learnMore: 'Tìm hiểu thêm'
+    badges: {
+      gps: 'GPS Định vị',
+      gpsDesc: 'Để cứu hộ tìm thấy bạn',
+      water: 'Lọc nước',
+      waterDesc: 'Nước bẩn = Bệnh tật',
+      sos: 'SOS Cứu hộ',
+      sosDesc: 'Khi mọi thứ sụp đổ',
     },
-    mission: {
-      badge: 'Câu chuyện của chúng tôi',
-      title: 'Tại sao NOAH ra đời?',
-      rmitTitle: '🎓 Dự án sinh viên RMIT',
-      rmitDesc: 'Noah là một dự án được khởi nguồn từ tâm huyết của nhóm sinh viên Đại học RMIT sau những chứng kiến tàn phá của lũ lụt đã cuốn trôi tài sản và lấy đi sinh mạng của nhiều người, đặc biệt ở khu vực miền Trung Việt Nam và các nước trong khu vực Đông Nam Á như Philippines.',
-      climateTitle: '🌍 Biến đổi khí hậu',
-      climateDesc: 'Biến đổi khí hậu đang ngày càng nghiêm trọng hơn, người dân vùng lũ phải gánh chịu mất mát ngày càng lớn. Vì vậy, chúng tôi không thể khoanh tay đứng nhìn.',
-      missionBadge: 'Sứ mệnh của chúng tôi',
-      missionDesc: 'Đó là lý do NOAH ra đời, NOAH được tạo ra với một sứ mệnh mang lại hy vọng và bảo vệ sự sống của người dân giữa dòng lũ.'
+    impact: {
+      badge: 'Sự thật đau lòng',
+      title: 'Thảm họa không chờ đợi',
+      subtitle: 'Những con số này không chỉ là thống kê — đó là sinh mạng, là gia đình, là những giấc mơ bị cuốn trôi',
+      stat1: 'Thiệt hại mỗi năm',
+      stat2: 'Người bị ảnh hưởng',
+      stat3: 'Tỉnh thành có nguy cơ',
+      stat4: 'Tháng mùa lũ',
+      caption1: 'Khi nước dâng, mọi thứ có thể mất chỉ trong vài giờ',
+      caption2: 'Nhiều gia đình bị cô lập hoàn toàn, không thức ăn, không nước sạch',
+    },
+    warning: {
+      badge: 'Cảnh báo quan trọng',
+      title: 'Những điều bạn cần biết',
+      note1: {
+        title: '⚠️ Nước lũ rất nguy hiểm',
+        desc: 'Chỉ 15cm nước chảy xiết có thể làm bạn ngã. 60cm nước có thể cuốn trôi xe hơi. Nước lũ chứa vi khuẩn, hóa chất độc hại và mảnh vỡ sắc nhọn.',
+      },
+      note2: {
+        title: '🕐 Thời gian vàng chỉ 72 giờ',
+        desc: 'Con người có thể sống 3 ngày không có nước, nhưng trong lũ lụt, nguy cơ nhiễm bệnh từ nước bẩn tăng gấp 10 lần. Chuẩn bị trước là sống còn.',
+      },
+      note3: {
+        title: '📍 Cứu hộ không thể đến nếu không biết bạn ở đâu',
+        desc: 'Trong trận lũ 2020 tại miền Trung, nhiều người mắc kẹt không được cứu kịp vì không có cách liên lạc. GPS có thể là sự khác biệt giữa sống và chết.',
+      },
+      note4: {
+        title: '👨‍👩‍👧‍👦 Trẻ em và người già dễ tổn thương nhất',
+        desc: 'Họ không thể tự bơi, dễ bị hạ thân nhiệt và mất nước nhanh hơn. Một bộ kit có thể cứu cả gia đình.',
+      },
+    },
+    howItWorks: {
+      badge: 'Cách hoạt động',
+      title: 'Từ chuẩn bị đến cứu hộ',
+      subtitle: 'Kit NOAH được thiết kế để sử dụng dễ dàng trong mọi tình huống khẩn cấp',
+      step1: {
+        title: 'Chuẩn bị sẵn sàng',
+        desc: 'Đặt kit NOAH tại vị trí dễ tiếp cận trong nhà. Kit được đóng gói gọn nhẹ, chống nước.',
+      },
+      step2: {
+        title: 'Kích hoạt GPS',
+        desc: 'Khi có lũ, bật thiết bị GPS. Vị trí của bạn sẽ được gửi đến trung tâm cứu hộ.',
+      },
+      step3: {
+        title: 'Sinh tồn an toàn',
+        desc: 'Sử dụng áo phao, lọc nước sạch, và lương khô trong khi chờ cứu hộ.',
+      },
+      step4: {
+        title: 'Được giải cứu',
+        desc: 'Đội cứu hộ định vị và tiếp cận bạn nhanh chóng nhờ tín hiệu GPS.',
+      },
     },
     products: {
-      badge: 'Sản phẩm',
-      title: 'Chọn bộ kit phù hợp với bạn',
-      subtitle: 'Ba gói sản phẩm được thiết kế để đáp ứng mọi nhu cầu và ngân sách',
-      basicTitle: 'Gói Cơ Bản',
-      basicDesc: 'Thiết yếu cho sinh tồn ngắn hạn và cứu hộ khẩn cấp',
-      basicPrice: '750K',
-      mediumTitle: 'Gói Trung Cấp',
-      mediumDesc: 'Bảo vệ toàn diện cho gia đình với thiết bị lọc nước',
-      mediumPrice: '1.5M',
-      premiumTitle: 'Gói Cao Cấp',
-      premiumDesc: 'Trang bị đầy đủ nhất cho sinh tồn kéo dài trong điều kiện khắc nghiệt',
-      premiumPrice: '2M',
-      currency: 'VNĐ',
-      popular: 'PHỔ BIẾN',
-      recommended: 'KHUYẾN NGHỊ',
-      suitableFor: 'PHÙ HỢP CHO:',
-      basicSuit: 'Hộ gia đình tại khu vực có nguy cơ ngập úng thấp',
-      mediumSuit: 'Hộ gia đình tại khu vực có nguy cơ lũ lụt trung bình',
-      premiumSuit: 'Khu vực có nguy cơ lũ lụt cao và điều kiện khắc nghiệt',
-      allInclude: 'Tất cả các gói đều bao gồm',
-      allIncludeDesc: 'Chống nước hoàn toàn, siêu nhẹ, dễ sử dụng. Được thiết kế đặc biệt cho điều kiện lũ lụt tại Việt Nam. Đội ngũ RMIT cam kết chất lượng và hiệu quả của từng sản phẩm.',
-      basicLifeJacket: 'Áo phao cơ bản',
-      basicLifeJacketPrice: 'Garan - 150K VNĐ',
+      title: 'Chọn Gói Phù Hợp',
+      subtitle: 'Ba gói sản phẩm được thiết kế để đáp ứng mọi nhu cầu',
+      basic: {
+        name: 'Cơ Bản',
+        price: 'Liên hệ',
+        desc: 'Sinh tồn ngắn hạn',
+      },
+      medium: {
+        name: 'Trung Cấp',
+        price: 'Liên hệ',
+        desc: 'Bảo vệ toàn diện',
+        tag: 'Phổ biến',
+      },
+      premium: {
+        name: 'Cao Cấp',
+        price: 'Liên hệ',
+        desc: 'Trang bị đầy đủ',
+        tag: 'Khuyến nghị',
+      },
+      compare: 'So sánh chi tiết',
+    },
+    comparison: {
+      title: 'So sánh các gói',
+      feature: 'Tính năng',
+      lifeJacket: 'Áo phao',
       gps: 'GPS định vị',
-      gpsPrice: 'Beitan BE-252i - 310K VNĐ',
       whistle: 'Còi cứu hộ',
-      whistlePrice: '20K VNĐ',
-      mreHalf: 'Lương khô MRE (0.5kg)',
-      mreHalfPrice: 'BB702 - 65K VNĐ',
-      mreOne: 'Lương khô MRE (1kg)',
-      mreOnePrice: 'BB702 - 130K VNĐ',
-      noWaterFilter: 'Không có ống lọc nước',
-      noFlashlight: 'Không có đèn pin',
-      lifeStraw: 'Ống lọc nước LifeStraw',
-      lifeStrawPrice: 'VesterGaard - 500K VNĐ',
-      basicFlashlight: 'Đèn pin cơ bản',
-      basicFlashlightPrice: 'Cree Zoom SS001 - 150K VNĐ',
-      premiumLifeJacket: 'Áo phao cao cấp',
-      premiumLifeJacketPrice: 'Dongtai - 650K VNĐ',
-      premiumFlashlight: 'Đèn pin cao cấp',
-      premiumFlashlightPrice: 'Haixnfire H010 - 250K VNĐ'
+      food: 'Lương khô MRE',
+      waterFilter: 'Lọc nước LifeStraw',
+      flashlight: 'Đèn pin',
+      basic: 'Cơ bản',
+      premium: 'Cao cấp',
+      none: 'Không có',
+      halfKg: '0.5kg',
+      oneKg: '1kg',
+    },
+    features: {
+      title: 'Tính Năng Nổi Bật',
+      gps: {
+        title: 'GPS Beitan BE-252i',
+        desc: 'Thiết bị định vị giúp đội cứu hộ tìm thấy bạn nhanh chóng trong mọi tình huống khẩn cấp.',
+        specs: ['Độ chính xác 2.5m', 'Pin 72 giờ', 'Chống nước IP68'],
+      },
+      water: {
+        title: 'LifeStraw VesterGaard',
+        desc: 'Ống lọc nước chính hãng, lọc 99.99% vi khuẩn và ký sinh trùng có hại.',
+        specs: ['Lọc 4,000L nước', 'Không cần pin', 'Trọng lượng 57g'],
+      },
+      food: {
+        title: 'Lương khô MRE BB702',
+        desc: 'Thực phẩm quân sự tiêu chuẩn, bảo quản lâu dài, đầy đủ dinh dưỡng.',
+        specs: ['Hạn sử dụng 5 năm', '2,400 kcal/gói', 'Ăn liền không nấu'],
+      },
+      light: {
+        title: 'Đèn pin Cree Zoom',
+        desc: 'Đèn chiếu sáng chuyên dụng với khả năng chịu nước tốt trong mọi điều kiện.',
+        specs: ['1000 lumens', 'Zoom 500m', 'Chống va đập'],
+      },
+    },
+    testimonials: {
+      badge: 'Câu chuyện sống sót',
+      title: 'Những người đã trải qua',
+      t1: {
+        quote: 'Năm 2020, nước dâng lúc 3 giờ sáng. Chúng tôi mất tất cả. Nếu có GPS, đội cứu hộ đã đến sớm hơn 6 tiếng. Mẹ tôi có thể vẫn còn sống.',
+        name: 'Nguyễn Văn Minh',
+        location: 'Quảng Bình',
+      },
+      t2: {
+        quote: 'Con trai tôi uống nước lũ vì không còn nước sạch. Nó bị tiêu chảy nặng, suýt mất mạng. Bây giờ tôi luôn có sẵn ống lọc nước.',
+        name: 'Trần Thị Hoa',
+        location: 'Thừa Thiên Huế',
+      },
+      t3: {
+        quote: 'Tôi đã chứng kiến học sinh của mình mất cha mẹ trong lũ. Các em không nên phải trải qua điều đó. Mỗi gia đình cần chuẩn bị trước.',
+        name: 'Lê Minh Tuấn',
+        location: 'Hà Tĩnh',
+      },
+    },
+    gallery: {
+      badge: 'Hình ảnh',
+      title: 'Thực trạng lũ lụt',
+      subtitle: 'Những hình ảnh cho thấy sự cần thiết của việc chuẩn bị',
+    },
+    mission: {
+      badge: 'Câu chuyện',
+      title: 'Tại sao NOAH ra đời?',
+      story: 'Noah là dự án từ tâm huyết của sinh viên RMIT sau những chứng kiến tàn phá của lũ lụt tại miền Trung Việt Nam và các nước Đông Nam Á.',
+      mission: 'Sứ mệnh của chúng tôi là mang lại hy vọng và bảo vệ sự sống của người dân giữa dòng lũ.',
+      vision: 'Tầm nhìn',
+      visionText: 'Mỗi gia đình Việt Nam trong vùng lũ đều có một bộ kit cứu hộ NOAH.',
+      values: 'Giá trị cốt lõi',
+      value1: 'An toàn là trên hết',
+      value2: 'Chất lượng không thỏa hiệp',
+      value3: 'Phục vụ cộng đồng',
     },
     sdg: {
       badge: 'Tác động xã hội',
       title: 'Mục tiêu phát triển bền vững',
-      sdg11: 'SDG 11: Thành phố bền vững',
-      sdg11Target: 'Mục tiêu 11.5:',
-      sdg11Desc: 'Giảm tác động tiêu cực của thiên tai',
-      sdg11Detail: 'Sản phẩm giúp tăng cường khả năng phục hồi và thích ứng trong các khu vực dễ bị thiên tai, góp phần giảm số người bị ảnh hưởng bởi lũ lụt.',
-      sdg13: 'SDG 13: Hành động khí hậu',
-      sdg13Target: 'Mục tiêu 13.1:',
-      sdg13Desc: 'Tăng cường khả năng chống chịu',
-      sdg13Detail: 'Trang bị công cụ sinh tồn thiết yếu giúp người dân chuẩn bị tốt hơn và chống chịu các thảm họa liên quan đến khí hậu.'
+      sdg11: 'SDG 11',
+      sdg11Title: 'Thành phố bền vững',
+      sdg11Desc: 'Giảm tác động tiêu cực của thiên tai, tăng khả năng phục hồi cộng đồng.',
+      sdg13: 'SDG 13',
+      sdg13Title: 'Hành động khí hậu',
+      sdg13Desc: 'Trang bị công cụ giúp người dân thích ứng với biến đổi khí hậu.',
     },
-    cta: {
-      title: 'Bạn đã sẵn sàng bảo vệ gia đình mình chưa?',
-      subtitle: 'Hãy là người đầu tiên sở hữu bộ kit cứu hộ NOAH khi chúng tôi ra mắt sản phẩm',
-      button: 'Đăng ký nhận thông báo ngay'
+    faq: {
+      badge: 'FAQ',
+      title: 'Câu hỏi thường gặp',
+      q1: 'Kit NOAH có thể sử dụng trong bao lâu?',
+      a1: 'Kit được thiết kế để hỗ trợ sinh tồn từ 3-7 ngày tùy theo gói. Lương khô có hạn sử dụng 5 năm, GPS có pin 72 giờ.',
+      q2: 'GPS có hoạt động ở vùng không có sóng điện thoại?',
+      a2: 'Có! GPS Beitan BE-252i sử dụng vệ tinh nên hoạt động độc lập với mạng di động. Tín hiệu được gửi qua sóng vô tuyến.',
+      q3: 'Tôi có thể mua kit ở đâu?',
+      a3: 'Hiện tại sản phẩm đang trong giai đoạn phát triển. Hãy đăng ký waitlist để được thông báo khi sản phẩm ra mắt.',
+      q4: 'Kit có phù hợp cho trẻ em không?',
+      a4: 'Có, áo phao có nhiều kích cỡ phù hợp cho cả người lớn và trẻ em. Lương khô MRE cũng an toàn cho mọi lứa tuổi.',
+    },
+    partners: {
+      badge: 'Đối tác',
+      title: 'Được hỗ trợ bởi',
     },
     waitlist: {
-      outOfStock: '⚠️ Hiện tại tạm hết hàng',
-      developmentTitle: 'Đang phát triển sản phẩm',
-      developmentDesc: 'Chúng tôi đang hoàn thiện sản phẩm để đảm bảo chất lượng tốt nhất cho khách hàng.',
-      specialOffer: '🎯 Ưu đãi đặc biệt',
-      specialOfferDesc: 'Những người đăng ký sớm sẽ nhận được ưu tiên mua hàng và các ưu đãi độc quyền khi sản phẩm ra mắt!',
-      formTitle: 'Đăng ký danh sách chờ',
-      formSubtitle: 'Để lại thông tin để nhận thông báo khi đợt sản xuất tiếp theo được ra mắt',
-      nameLabel: 'Họ và tên *',
-      namePlaceholder: 'Nguyễn Văn A',
-      phoneLabel: 'Số điện thoại *',
-      phonePlaceholder: '0912345678',
-      emailLabel: 'Email *',
-      emailPlaceholder: 'example@email.com',
-      submitBtn: 'Đăng ký ngay',
-      successMsg: 'Cảm ơn bạn đã đăng ký! Chúng tôi sẽ liên hệ với bạn sớm nhất.'
+      title: 'Đăng Ký Nhận Thông Báo',
+      subtitle: 'Mùa lũ sắp đến. Đừng đợi đến khi quá muộn.',
+      name: 'Họ và tên',
+      phone: 'Số điện thoại',
+      email: 'Email',
+      submit: 'Đăng ký ngay',
+      success: 'Cảm ơn bạn đã đăng ký!',
+      development: 'Đang phát triển',
+      devDesc: 'Sản phẩm đang được hoàn thiện để đảm bảo chất lượng tốt nhất.',
+      urgentNote: 'Lưu ý quan trọng',
+      urgentDesc: 'Mùa mưa bão thường bắt đầu từ tháng 9-11. Hãy chuẩn bị trước ít nhất 2 tháng.',
+      registered: 'gia đình đã đăng ký bảo vệ người thân',
     },
     contact: {
-      badge: 'Liên hệ',
-      title: 'Kết nối với chúng tôi',
-      hotlineTitle: 'Hotline khách hàng',
-      hotlineSupport: 'Hỗ trợ 24/7',
-      emailTitle: 'Email',
-      emailResponse: 'Phản hồi trong 24h',
-      partnerTitle: 'Dành cho đối tác doanh nghiệp',
-      partnerDesc: 'Hợp tác cùng NOAH để mang sản phẩm đến với cộng đồng',
-      vietnamese: '🇻🇳 Tiếng Việt:',
-      english: '🇬🇧 English:'
+      title: 'Liên Hệ',
+      hotline: 'Hotline 24/7',
+      email: 'Email hỗ trợ',
+      partner: 'Đối tác doanh nghiệp',
+      address: 'Địa chỉ',
+      addressText: 'RMIT University Vietnam, Quận 7, TP.HCM',
     },
     footer: {
-      tagline: 'Mang lại hy vọng và bảo vệ sự sống của người dân giữa dòng lũ',
-      aboutTitle: 'Về dự án',
-      aboutDesc: 'Dự án của sinh viên Đại học RMIT nhằm giải quyết vấn đề lũ lụt tại Việt Nam thông qua công nghệ và đổi mới sáng tạo.',
-      sdgTitle: 'SDG Goals',
-      copyright: '© 2025 NOAH - Emergency Flood Kit. Một dự án của sinh viên Đại học RMIT.'
-    }
+      tagline: 'Vì mỗi sinh mạng đều đáng được bảo vệ',
+      project: 'Dự án sinh viên RMIT',
+      copyright: '© 2025 NOAH Emergency Flood Kit',
+      privacy: 'Chính sách bảo mật',
+      terms: 'Điều khoản sử dụng',
+    },
   },
   en: {
     nav: {
-      logo: 'Emergency Kit',
       home: 'Home',
       products: 'Products',
       about: 'About',
       contact: 'Contact',
-      cta: 'Sign Up Now'
     },
     hero: {
-      badge: 'Emergency Flood Kit',
-      title1: 'Hope in the Flood',
-      subtitle: 'Protecting what matters most - your family and life',
-      description: 'Specially designed for flood conditions in Vietnam. Integrated GPS, water filter, food and essential survival equipment.',
-      exploreBtn: 'Explore Products',
-      registerBtn: 'Sign Up Now',
-      stat1: 'of VN disasters from storms/floods',
-      stat2: 'of VN population at risk',
+      tagline: 'Emergency Flood Kit',
+      title1: "Don't Let",
+      title2: 'It Be Too Late',
+      subtitle: "Every year, hundreds of Vietnamese lose their lives to floods. Don't let your family become the next statistic.",
+      description: 'The NOAH rescue kit was designed from the pain of loss. Every feature is researched from real flood situations in Vietnam.',
+      cta: 'Learn More',
+      stats: {
+        disasters: 'disasters from floods',
+        population: 'population at risk',
+      },
+    },
+    badges: {
       gps: 'GPS Tracking',
-      gpsDesc: 'Real-time location',
-      lifestraw: 'LifeStraw',
-      lifestawDesc: 'Clean water',
-      mre: 'MRE Food',
-      mreDesc: 'Military grade'
+      gpsDesc: 'So rescuers can find you',
+      water: 'Water Filter',
+      waterDesc: 'Dirty water = Disease',
+      sos: 'SOS Rescue',
+      sosDesc: 'When everything falls apart',
+    },
+    impact: {
+      badge: 'Painful Truths',
+      title: 'Disaster Waits For No One',
+      subtitle: "These numbers aren't just statistics — they are lives, families, and dreams swept away",
+      stat1: 'Damage per year',
+      stat2: 'People affected',
+      stat3: 'Provinces at risk',
+      stat4: 'Flood months',
+      caption1: 'When water rises, everything can be lost in just hours',
+      caption2: 'Many families are completely isolated, without food, without clean water',
+    },
+    warning: {
+      badge: 'Critical Warning',
+      title: 'What You Need to Know',
+      note1: {
+        title: '⚠️ Floodwater is extremely dangerous',
+        desc: 'Just 6 inches of fast-moving water can knock you down. 2 feet of water can sweep away a car. Floodwater contains bacteria, toxic chemicals, and sharp debris.',
+      },
+      note2: {
+        title: '🕐 The golden window is only 72 hours',
+        desc: 'Humans can survive 3 days without water, but during floods, the risk of infection from dirty water increases 10x. Preparation is survival.',
+      },
+      note3: {
+        title: "📍 Rescue can't come if they don't know where you are",
+        desc: "During the 2020 floods in Central Vietnam, many trapped people weren't rescued in time because they had no way to communicate. GPS can be the difference between life and death.",
+      },
+      note4: {
+        title: '👨‍👩‍👧‍👦 Children and elderly are most vulnerable',
+        desc: "They can't swim on their own, are more prone to hypothermia and dehydrate faster. One kit can save an entire family.",
+      },
+    },
+    howItWorks: {
+      badge: 'How It Works',
+      title: 'From Preparation to Rescue',
+      subtitle: 'NOAH kit is designed for easy use in any emergency',
+      step1: {
+        title: 'Be Prepared',
+        desc: 'Place NOAH kit in an accessible location. Kit is compact and waterproof.',
+      },
+      step2: {
+        title: 'Activate GPS',
+        desc: 'When flooding occurs, turn on GPS. Your location is sent to rescue center.',
+      },
+      step3: {
+        title: 'Survive Safely',
+        desc: 'Use life jacket, filter clean water, and eat rations while waiting.',
+      },
+      step4: {
+        title: 'Get Rescued',
+        desc: 'Rescue team locates and reaches you quickly via GPS signal.',
+      },
+    },
+    products: {
+      title: 'Choose Your Kit',
+      subtitle: 'Three packages designed to meet all needs',
+      basic: {
+        name: 'Basic',
+        price: 'Contact us',
+        desc: 'Short-term survival',
+      },
+      medium: {
+        name: 'Medium',
+        price: 'Contact us',
+        desc: 'Full protection',
+        tag: 'Popular',
+      },
+      premium: {
+        name: 'Premium',
+        price: 'Contact us',
+        desc: 'Fully equipped',
+        tag: 'Recommended',
+      },
+      compare: 'Compare Details',
+    },
+    comparison: {
+      title: 'Compare Packages',
+      feature: 'Feature',
+      lifeJacket: 'Life Jacket',
+      gps: 'GPS Tracking',
+      whistle: 'Emergency Whistle',
+      food: 'MRE Rations',
+      waterFilter: 'LifeStraw Filter',
+      flashlight: 'Flashlight',
+      basic: 'Basic',
+      premium: 'Premium',
+      none: 'None',
+      halfKg: '0.5kg',
+      oneKg: '1kg',
     },
     features: {
-      badge: 'Key Features',
-      title: 'Fully Equipped for Survival',
-      subtitle: 'Each kit is carefully designed with advanced technology',
-      gpsTitle: 'GPS Tracking',
-      gpsDesc: 'Beitan BE-252i GPS device helps rescue teams find you quickly in any emergency situation.',
-      waterTitle: 'LifeStraw Water Filter',
-      waterDesc: 'Authentic LifeStraw water filter from VesterGaard, filters 99.99% of harmful bacteria and parasites.',
-      mreTitle: 'MRE Rations',
-      mreDesc: 'Standard BB702 military food, long-term storage, provides all necessary nutrition.',
-      flashlightTitle: 'Flashlight',
-      flashlightDesc: 'Cree Zoom professional flashlight with powerful illumination, waterproof in all conditions.',
-      learnMore: 'Learn More'
+      title: 'Key Features',
+      gps: {
+        title: 'GPS Beitan BE-252i',
+        desc: 'Tracking device helps rescue teams find you quickly in any emergency.',
+        specs: ['2.5m accuracy', '72h battery', 'IP68 waterproof'],
+      },
+      water: {
+        title: 'LifeStraw VesterGaard',
+        desc: 'Authentic water filter that removes 99.99% of harmful bacteria and parasites.',
+        specs: ['Filters 4,000L', 'No batteries', 'Weight 57g'],
+      },
+      food: {
+        title: 'MRE Rations BB702',
+        desc: 'Military-grade food with long-term storage and complete nutrition.',
+        specs: ['5-year shelf life', '2,400 kcal/pack', 'Ready to eat'],
+      },
+      light: {
+        title: 'Cree Zoom Flashlight',
+        desc: 'Professional flashlight with powerful waterproof illumination.',
+        specs: ['1000 lumens', '500m zoom', 'Shock resistant'],
+      },
+    },
+    testimonials: {
+      badge: 'Survivor Stories',
+      title: 'Those Who Lived Through It',
+      t1: {
+        quote: 'In 2020, the water rose at 3 AM. We lost everything. If we had GPS, the rescue team would have arrived 6 hours earlier. My mother might still be alive.',
+        name: 'Nguyen Van Minh',
+        location: 'Quang Binh',
+      },
+      t2: {
+        quote: 'My son drank floodwater because there was no clean water left. He got severe diarrhea, nearly died. Now I always keep a water filter ready.',
+        name: 'Tran Thi Hoa',
+        location: 'Thua Thien Hue',
+      },
+      t3: {
+        quote: "I've witnessed my students lose their parents in floods. They shouldn't have to go through that. Every family needs to prepare in advance.",
+        name: 'Le Minh Tuan',
+        location: 'Ha Tinh',
+      },
+    },
+    gallery: {
+      badge: 'Gallery',
+      title: 'Flood Reality',
+      subtitle: 'Images showing the necessity of preparation',
     },
     mission: {
       badge: 'Our Story',
-      title: 'Why NOAH was created?',
-      rmitTitle: '🎓 RMIT Student Project',
-      rmitDesc: 'Noah is a project born from the passion of RMIT University students after witnessing the devastation of floods that swept away property and took lives, especially in Central Vietnam and Southeast Asian countries like the Philippines.',
-      climateTitle: '🌍 Climate Change',
-      climateDesc: 'Climate change is becoming increasingly severe, people in flood areas are bearing greater losses. Therefore, we cannot stand by and watch.',
-      missionBadge: 'Our Mission',
-      missionDesc: "That's why NOAH was created, NOAH was made with a mission to bring hope and protect people's lives in the flood."
-    },
-    products: {
-      badge: 'Products',
-      title: 'Choose the kit that suits you',
-      subtitle: 'Three product packages designed to meet all needs and budgets',
-      basicTitle: 'Basic Kit',
-      basicDesc: 'Essential for short-term survival and emergency rescue',
-      basicPrice: '750K',
-      mediumTitle: 'Medium Kit',
-      mediumDesc: 'Comprehensive family protection with water filter',
-      mediumPrice: '1.5M',
-      premiumTitle: 'Premium Kit',
-      premiumDesc: 'Most comprehensive equipment for prolonged survival in harsh conditions',
-      premiumPrice: '2M',
-      currency: 'VND',
-      popular: 'POPULAR',
-      recommended: 'RECOMMENDED',
-      suitableFor: 'SUITABLE FOR:',
-      basicSuit: 'Households in areas with low flood risk',
-      mediumSuit: 'Households in areas with medium flood risk',
-      premiumSuit: 'Areas with high flood risk and harsh conditions',
-      allInclude: 'All packages include',
-      allIncludeDesc: 'Completely waterproof, ultra-light, easy to use. Specially designed for flood conditions in Vietnam. RMIT team is committed to the quality and effectiveness of each product.',
-      basicLifeJacket: 'Basic life jacket',
-      basicLifeJacketPrice: 'Garan - 150K VND',
-      gps: 'GPS Tracking',
-      gpsPrice: 'Beitan BE-252i - 310K VND',
-      whistle: 'Emergency whistle',
-      whistlePrice: '20K VND',
-      mreHalf: 'MRE Rations (0.5kg)',
-      mreHalfPrice: 'BB702 - 65K VND',
-      mreOne: 'MRE Rations (1kg)',
-      mreOnePrice: 'BB702 - 130K VND',
-      noWaterFilter: 'No water filter',
-      noFlashlight: 'No flashlight',
-      lifeStraw: 'LifeStraw Water Filter',
-      lifeStrawPrice: 'VesterGaard - 500K VND',
-      basicFlashlight: 'Basic flashlight',
-      basicFlashlightPrice: 'Cree Zoom SS001 - 150K VND',
-      premiumLifeJacket: 'Premium life jacket',
-      premiumLifeJacketPrice: 'Dongtai - 650K VND',
-      premiumFlashlight: 'Premium flashlight',
-      premiumFlashlightPrice: 'Haixnfire H010 - 250K VND'
+      title: 'Why NOAH?',
+      story: 'Noah is a project born from RMIT students after witnessing flood devastation in Central Vietnam and Southeast Asian countries.',
+      mission: 'Our mission is to bring hope and protect lives in the flood.',
+      vision: 'Vision',
+      visionText: 'Every Vietnamese family in flood zones has a NOAH rescue kit.',
+      values: 'Core Values',
+      value1: 'Safety first',
+      value2: 'Uncompromised quality',
+      value3: 'Community service',
     },
     sdg: {
       badge: 'Social Impact',
       title: 'Sustainable Development Goals',
-      sdg11: 'SDG 11: Sustainable Cities',
-      sdg11Target: 'Target 11.5:',
-      sdg11Desc: 'Reduce adverse effects of disasters',
-      sdg11Detail: 'The product helps strengthen resilience and adaptation in disaster-prone areas, contributing to reducing the number of people affected by floods.',
-      sdg13: 'SDG 13: Climate Action',
-      sdg13Target: 'Target 13.1:',
-      sdg13Desc: 'Strengthen resilience',
-      sdg13Detail: 'Equipping essential survival tools helps people better prepare and withstand climate-related disasters.'
+      sdg11: 'SDG 11',
+      sdg11Title: 'Sustainable Cities',
+      sdg11Desc: 'Reduce adverse effects of disasters, strengthen community resilience.',
+      sdg13: 'SDG 13',
+      sdg13Title: 'Climate Action',
+      sdg13Desc: 'Equip tools to help people adapt to climate change.',
     },
-    cta: {
-      title: 'Are you ready to protect your family?',
-      subtitle: 'Be the first to own the NOAH rescue kit when we launch the product',
-      button: 'Sign Up for Notifications'
+    faq: {
+      badge: 'FAQ',
+      title: 'Frequently Asked Questions',
+      q1: 'How long can the NOAH kit support survival?',
+      a1: 'Kit is designed to support 3-7 days depending on package. Rations have 5-year shelf life, GPS has 72-hour battery.',
+      q2: 'Does GPS work without mobile signal?',
+      a2: 'Yes! Beitan BE-252i GPS uses satellite so it works independently from mobile networks. Signal is sent via radio waves.',
+      q3: 'Where can I buy the kit?',
+      a3: 'Currently the product is in development. Register for waitlist to be notified when product launches.',
+      q4: 'Is the kit suitable for children?',
+      a4: 'Yes, life jackets come in multiple sizes for adults and children. MRE rations are also safe for all ages.',
+    },
+    partners: {
+      badge: 'Partners',
+      title: 'Supported By',
     },
     waitlist: {
-      outOfStock: '⚠️ Currently Out of Stock',
-      developmentTitle: 'Product in Development',
-      developmentDesc: 'We are perfecting the product to ensure the best quality for customers.',
-      specialOffer: '🎯 Special Offer',
-      specialOfferDesc: 'Early registrants will receive priority purchase and exclusive offers when the product launches!',
-      formTitle: 'Join the Waitlist',
-      formSubtitle: 'Leave your information to receive notifications when the next production batch is released',
-      nameLabel: 'Full Name *',
-      namePlaceholder: 'John Doe',
-      phoneLabel: 'Phone Number *',
-      phonePlaceholder: '0912345678',
-      emailLabel: 'Email *',
-      emailPlaceholder: 'example@email.com',
-      submitBtn: 'Sign Up Now',
-      successMsg: 'Thank you for signing up! We will contact you soon.'
+      title: 'Register For Updates',
+      subtitle: "Flood season is coming. Don't wait until it's too late.",
+      name: 'Full name',
+      phone: 'Phone number',
+      email: 'Email',
+      submit: 'Register now',
+      success: 'Thank you for registering!',
+      development: 'In Development',
+      devDesc: 'Product is being perfected to ensure the best quality.',
+      urgentNote: 'Important Note',
+      urgentDesc: 'Storm season typically starts September-November. Prepare at least 2 months in advance.',
+      registered: 'families registered to protect loved ones',
     },
     contact: {
-      badge: 'Contact',
-      title: 'Connect with us',
-      hotlineTitle: 'Customer Hotline',
-      hotlineSupport: '24/7 Support',
-      emailTitle: 'Email',
-      emailResponse: 'Response within 24h',
-      partnerTitle: 'For Business Partners',
-      partnerDesc: 'Partner with NOAH to bring products to the community',
-      vietnamese: '🇻🇳 Vietnamese:',
-      english: '🇬🇧 English:'
+      title: 'Contact',
+      hotline: '24/7 Hotline',
+      email: 'Support Email',
+      partner: 'Business Partners',
+      address: 'Address',
+      addressText: 'RMIT University Vietnam, District 7, HCMC',
     },
     footer: {
-      tagline: 'Bringing hope and protecting people\'s lives in the flood',
-      aboutTitle: 'About the Project',
-      aboutDesc: 'A project by RMIT University students aimed at solving flood problems in Vietnam through technology and innovation.',
-      sdgTitle: 'SDG Goals',
-      copyright: '© 2025 NOAH - Emergency Flood Kit. A project by RMIT University students.'
-    }
-  }
+      tagline: 'Because every life deserves protection',
+      project: 'RMIT Student Project',
+      copyright: '© 2025 NOAH Emergency Flood Kit',
+      privacy: 'Privacy Policy',
+      terms: 'Terms of Service',
+    },
+  },
 };
+
+// Animated counter hook
+function useCounter(end: number, duration: number = 2000, startOnView: boolean = true) {
+  const [count, setCount] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!startOnView) {
+      setHasStarted(true);
+    }
+  }, [startOnView]);
+
+  useEffect(() => {
+    if (startOnView && ref.current) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting && !hasStarted) {
+            setHasStarted(true);
+          }
+        },
+        { threshold: 0.5 }
+      );
+      observer.observe(ref.current);
+      return () => observer.disconnect();
+    }
+  }, [hasStarted, startOnView]);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+
+    let startTime: number;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      setCount(Math.floor(progress * end));
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    };
+    requestAnimationFrame(step);
+  }, [end, duration, hasStarted]);
+
+  return { count, ref };
+}
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>('vi');
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-  });
+  const [mounted, setMounted] = useState(false);
+  const [activeProduct, setActiveProduct] = useState(1);
+  const [formData, setFormData] = useState({ name: '', phone: '', email: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   const t = translations[language];
+
+  const counter1 = useCounter(15, 2000);
+  const counter2 = useCounter(7, 2000);
+  const counter3 = useCounter(28, 2000);
+  const counter4 = useCounter(6, 2000);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveTestimonial((prev) => (prev + 1) % 3);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    alert(t.waitlist.successMsg);
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 3000);
     setFormData({ name: '', phone: '', email: '' });
   };
 
-  const toggleLanguage = () => {
-    setLanguage(prev => prev === 'vi' ? 'en' : 'vi');
-  };
+  const products = [
+    { id: 0, name: t.products.basic.name, price: t.products.basic.price, desc: t.products.basic.desc, image: '/mock-1.png' },
+    { id: 1, name: t.products.medium.name, price: t.products.medium.price, desc: t.products.medium.desc, tag: t.products.medium.tag, image: '/mock-2.png' },
+    { id: 2, name: t.products.premium.name, price: t.products.premium.price, desc: t.products.premium.desc, tag: t.products.premium.tag, image: '/mock-1.png' },
+  ];
+
+  const testimonials = [t.testimonials.t1, t.testimonials.t2, t.testimonials.t3];
+  const faqs = [
+    { q: t.faq.q1, a: t.faq.a1 },
+    { q: t.faq.q2, a: t.faq.a2 },
+    { q: t.faq.q3, a: t.faq.a3 },
+    { q: t.faq.q4, a: t.faq.a4 },
+  ];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation Bar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm">
-        <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <div className="flex items-center gap-2">
-              <div className="text-2xl font-black bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                NOAH
-              </div>
-              <span className="text-xs text-gray-500 font-medium">{t.nav.logo}</span>
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+        :root {
+          --color-cream: #FAF8F5;
+          --color-cream-dark: #F0EDE8;
+          --color-ink: #1A1A1A;
+          --color-ink-light: #4A4A4A;
+          --color-ink-muted: #8A8A8A;
+          --color-accent: #2563EB;
+          --color-accent-light: #DBEAFE;
+          --color-success: #059669;
+          --color-warning: #D97706;
+          --color-danger: #DC2626;
+          --font-display: 'Cormorant Garamond', Georgia, serif;
+          --font-body: 'DM Sans', system-ui, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+          font-family: var(--font-body);
+          background: var(--color-cream);
+          color: var(--color-ink);
+          overflow-x: hidden;
+        }
+        ::selection { background: var(--color-accent); color: white; }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-12px) rotate(1deg); }
+        }
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
+        }
+        @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slide-in-right {
+          from { opacity: 0; transform: translateX(40px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse-ring {
+          0% { transform: scale(0.8); opacity: 1; }
+          100% { transform: scale(2); opacity: 0; }
+        }
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+        .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+        .animate-slide-in-right { animation: slide-in-right 0.8s ease-out forwards; }
+        .animate-marquee { animation: marquee 30s linear infinite; }
+
+        .grain {
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          pointer-events: none;
+          z-index: 1000;
+          opacity: 0.03;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        .hover-lift {
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+      `}</style>
+
+      <div className="grain" />
+
+      <div style={{ minHeight: '100vh', background: 'var(--color-cream)' }}>
+        {/* Navigation */}
+        <header style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+          background: 'rgba(250, 248, 245, 0.9)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(0,0,0,0.05)',
+        }}>
+          <nav style={{
+            maxWidth: '1400px', margin: '0 auto', padding: '0 2rem',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '80px',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{
+                fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 700,
+                letterSpacing: '-0.02em', color: 'var(--color-ink)',
+              }}>NOAH</span>
             </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
-              <a href="#" className="text-gray-900 font-medium hover:text-blue-600 transition-colors">
-                {t.nav.home}
-              </a>
-              <a href="#products" className="text-gray-600 font-medium hover:text-blue-600 transition-colors">
-                {t.nav.products}
-              </a>
-              <a href="#waitlist" className="text-gray-600 font-medium hover:text-blue-600 transition-colors">
-                {t.nav.about}
-              </a>
-              <a href="#waitlist" className="text-gray-600 font-medium hover:text-blue-600 transition-colors">
-                {t.nav.contact}
-              </a>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '0.5rem',
+              background: 'white', padding: '0.5rem', borderRadius: '100px',
+              boxShadow: '0 2px 20px rgba(0,0,0,0.06)',
+            }}>
+              {[
+                { label: t.nav.home, href: '#', active: true },
+                { label: t.nav.products, href: '#products' },
+                { label: t.nav.about, href: '#about' },
+                { label: t.nav.contact, href: '#contact' },
+              ].map((item, i) => (
+                <a key={i} href={item.href} style={{
+                  padding: '0.75rem 1.5rem', borderRadius: '100px',
+                  fontSize: '0.9rem', fontWeight: 500, textDecoration: 'none',
+                  transition: 'all 0.3s ease',
+                  background: item.active ? 'var(--color-ink)' : 'transparent',
+                  color: item.active ? 'white' : 'var(--color-ink-light)',
+                }}>{item.label}</a>
+              ))}
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex items-center gap-3">
-              {/* Language Toggle */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <button
-                onClick={toggleLanguage}
-                className="flex items-center gap-2 px-3 py-2 rounded-full border border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all"
-                aria-label="Toggle language"
+                type="button"
+                onClick={() => setLanguage(prev => (prev === 'vi' ? 'en' : 'vi'))}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.6rem 1rem', borderRadius: '100px',
+                  border: '1.5px solid rgba(0,0,0,0.1)', background: 'transparent',
+                  cursor: 'pointer', fontSize: '0.85rem', fontWeight: 500,
+                  color: 'var(--color-ink)', transition: 'all 0.3s ease',
+                }}
               >
-                <span className="text-sm font-medium text-gray-700">{language === 'vi' ? '🇻🇳 VI' : '🇬🇧 EN'}</span>
+                {language === 'vi' ? '🇻🇳 VI' : '🇬🇧 EN'}
               </button>
-
-              <a
-                href="#waitlist"
-                className="hidden sm:inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
-              >
-                <span>{t.nav.cta}</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              <a href="#waitlist" style={{
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.75rem 1.5rem', borderRadius: '100px',
+                background: 'var(--color-ink)', color: 'white',
+                fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none',
+                transition: 'all 0.3s ease', boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+              }}>
+                {t.hero.cta}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </a>
-
-              {/* Mobile Menu Button */}
-              <button className="md:hidden p-2 text-gray-600 hover:text-blue-600 transition-colors">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
             </div>
-          </div>
-        </nav>
-      </header>
+          </nav>
+        </header>
 
-      {/* Hero Section - Split Layout */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white overflow-hidden pt-20">
-        {/* Animated background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }}></div>
-        </div>
+        {/* Hero Section */}
+        <section style={{
+          minHeight: '100vh', display: 'flex', alignItems: 'center',
+          paddingTop: '80px', position: 'relative', overflow: 'hidden',
+        }}>
+          <div style={{
+            position: 'absolute', top: '20%', right: '-10%',
+            width: '60%', height: '80%',
+            background: 'linear-gradient(135deg, #E0F2FE 0%, #DBEAFE 50%, #EDE9FE 100%)',
+            borderRadius: '40% 60% 60% 40% / 60% 40% 60% 40%',
+            opacity: 0.6, filter: 'blur(60px)',
+          }} />
 
-        {/* Floating water droplets animation */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-blue-400 rounded-full opacity-20 blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-40 h-40 bg-blue-500 rounded-full opacity-20 blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-blue-300 rounded-full opacity-20 blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20">
-          <div className="max-w-7xl mx-auto">
-            {/* Two Column Split Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* Left Side - Branding & Message */}
-              <div className="space-y-8">
-                {/* Logo/Brand */}
-                <div className="space-y-4">
-                  <div className="inline-block bg-blue-500/30 backdrop-blur-sm px-5 py-2 rounded-full text-sm font-semibold border border-blue-400/30">
-                    {t.hero.badge}
-                  </div>
-                  <h1 className="text-7xl md:text-8xl font-black bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent leading-tight">
-                    NOAH
-                  </h1>
-                </div>
-
-                {/* Slogan & Positive Message */}
-                <div className="space-y-6">
-                  <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-                    {t.hero.title1}
-                  </h2>
-                  <p className="text-xl md:text-2xl text-blue-100 leading-relaxed font-light">
-                    {t.hero.subtitle}
-                  </p>
-                  <div className="flex items-start gap-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
-                    <div className="text-3xl">✨</div>
-                    <div>
-                      <p className="text-blue-50 leading-relaxed">
-                        {t.hero.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-wrap gap-4 pt-4">
-                  <a
-                    href="#products"
-                    className="inline-flex items-center gap-2 bg-white text-blue-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-50 transition-all transform hover:scale-105 shadow-2xl"
-                  >
-                    <span>{t.hero.exploreBtn}</span>
-                    <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                      <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                    </svg>
-                  </a>
-                  <a
-                    href="#waitlist"
-                    className="inline-flex items-center gap-2 bg-blue-600/30 backdrop-blur-sm border-2 border-white/40 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-600/50 hover:border-white/60 transition-all"
-                  >
-                    {t.hero.registerBtn}
-                  </a>
-                </div>
-
-                {/* Quick Stats */}
-                <div className="grid grid-cols-2 gap-4 pt-4">
-                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5">
-                    <div className="text-4xl font-bold text-blue-300 mb-1">98%</div>
-                    <div className="text-sm text-blue-200">{t.hero.stat1}</div>
-                  </div>
-                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5">
-                    <div className="text-4xl font-bold text-blue-300 mb-1">70%</div>
-                    <div className="text-sm text-blue-200">{t.hero.stat2}</div>
-                  </div>
-                </div>
+          <div style={{
+            maxWidth: '1400px', margin: '0 auto', padding: '0 2rem', width: '100%',
+            display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '4rem',
+            alignItems: 'center', position: 'relative', zIndex: 1,
+          }}>
+            {/* Left Content */}
+            <div className={mounted ? 'animate-fade-in-up' : ''} style={{ opacity: mounted ? 1 : 0 }}>
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.5rem 1rem', background: 'white', borderRadius: '100px',
+                fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-accent)',
+                marginBottom: '2rem', boxShadow: '0 2px 20px rgba(0,0,0,0.06)',
+              }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-success)' }} />
+                {t.hero.tagline}
               </div>
 
-              {/* Right Side - Product Mockups with Floating Elements */}
-              <div className="relative lg:h-[700px] flex items-center justify-center">
-                {/* Floating Elements */}
-                <div className="absolute inset-0">
-                  {/* Large floating circle */}
-                  <div className="absolute top-10 right-10 w-64 h-64 bg-gradient-to-br from-cyan-400/30 to-blue-500/30 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '3s' }}></div>
+              <h1 style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(3.5rem, 8vw, 5.5rem)', fontWeight: 600,
+                lineHeight: 1, letterSpacing: '-0.02em',
+                marginBottom: '1.5rem', color: 'var(--color-ink)',
+              }}>
+                {t.hero.title1}{' '}
+                <span style={{ display: 'inline-flex', alignItems: 'center', verticalAlign: 'middle', margin: '0 0.3rem' }}>
+                  <img
+                    src="/mock-2.png"
+                    alt="Flood"
+                    style={{
+                      width: '70px', height: '70px', borderRadius: '50%',
+                      objectFit: 'cover', border: '3px solid white',
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                    }}
+                  />
+                </span>
+                <br />
+                <span style={{ fontStyle: 'italic', color: 'var(--color-accent)' }}>
+                  {t.hero.title2}
+                </span>
+              </h1>
 
-                  {/* Small floating badges */}
-                  <div className="absolute top-20 left-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 shadow-2xl transform rotate-[-5deg] hover:rotate-0 transition-transform animate-float">
-                    <div className="flex items-center gap-3">
-                      <div className="text-3xl">🧭</div>
-                      <div>
-                        <div className="text-sm font-bold">{t.hero.gps}</div>
-                        <div className="text-xs text-blue-200">{t.hero.gpsDesc}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="absolute bottom-32 left-5 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 shadow-2xl transform rotate-[5deg] hover:rotate-0 transition-transform animate-float" style={{ animationDelay: '1s' }}>
-                    <div className="flex items-center gap-3">
-                      <div className="text-3xl">💧</div>
-                      <div>
-                        <div className="text-sm font-bold">{t.hero.lifestraw}</div>
-                        <div className="text-xs text-blue-200">{t.hero.lifestawDesc}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="absolute top-1/3 right-5 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 shadow-2xl transform rotate-[8deg] hover:rotate-0 transition-transform animate-float" style={{ animationDelay: '2s' }}>
-                    <div className="flex items-center gap-3">
-                      <div className="text-3xl">🍱</div>
-                      <div>
-                        <div className="text-sm font-bold">{t.hero.mre}</div>
-                        <div className="text-xs text-blue-200">{t.hero.mreDesc}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Main Product Images */}
-                <div className="relative z-10 w-full max-w-lg mx-auto">
-                  {/* Primary mockup - larger, in front */}
-                  <div className="relative transform hover:scale-105 transition-transform duration-500 animate-float-slow">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-400/40 to-purple-500/40 rounded-3xl blur-2xl animate-pulse"></div>
-                    <img
-                      src="/mock-1.png"
-                      alt="Noah Emergency Kit - Main View"
-                      className="relative rounded-3xl shadow-2xl border-4 border-white/20 w-full"
-                    />
-                  </div>
-
-                  {/* Secondary mockup - smaller, offset behind */}
-                  <div className="absolute -bottom-10 -right-10 w-3/5 transform rotate-6 hover:rotate-3 transition-transform duration-500 animate-float" style={{ animationDelay: '1.5s' }}>
-                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/40 to-blue-500/40 rounded-3xl blur-xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-                    <img
-                      src="/mock-2.png"
-                      alt="Noah Emergency Kit - Detail View"
-                      className="relative rounded-2xl shadow-2xl border-4 border-white/20 w-full"
-                    />
-                  </div>
-                </div>
-
-                {/* Floating accent elements */}
-                <div className="absolute top-1/4 left-1/4 w-20 h-20 bg-yellow-400/20 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '2s', animationDelay: '0.5s' }}></div>
-                <div className="absolute bottom-1/4 right-1/3 w-16 h-16 bg-emerald-400/20 rounded-full blur-xl animate-pulse" style={{ animationDuration: '2.5s', animationDelay: '1s' }}></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <svg className="w-6 h-6 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-            <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-          </svg>
-        </div>
-      </section>
-
-      {/* Features Highlight Section */}
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="inline-block bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                {t.features.badge}
-              </span>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                {t.features.title}
-              </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                {t.features.subtitle}
+              <p style={{
+                fontSize: '1.25rem', lineHeight: 1.6, color: 'var(--color-ink-light)',
+                marginBottom: '2rem', maxWidth: '500px',
+              }}>
+                {t.hero.subtitle}
               </p>
-            </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* GPS Feature */}
-              <div className="group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-8 border-2 border-emerald-200 hover:border-emerald-400 transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
-                <div className="bg-emerald-500 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
-                  🧭
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{t.features.gpsTitle}</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  {t.features.gpsDesc}
-                </p>
-                <div className="inline-flex items-center gap-2 text-emerald-600 font-semibold">
-                  <span>{t.features.learnMore}</span>
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                  </svg>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '3rem',
+              }}>
+                <div style={{
+                  width: '50px', height: '80px', border: '2px solid rgba(0,0,0,0.15)',
+                  borderRadius: '100px', display: 'flex', justifyContent: 'center', paddingTop: '12px',
+                }}>
+                  <div className="animate-float-slow" style={{
+                    width: '6px', height: '20px', background: 'var(--color-ink)', borderRadius: '100px',
+                  }} />
                 </div>
               </div>
 
-              {/* Water Filter Feature */}
-              <div className="group bg-gradient-to-br from-cyan-50 to-blue-50 rounded-3xl p-8 border-2 border-cyan-200 hover:border-cyan-400 transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
-                <div className="bg-cyan-500 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
-                  💧
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{t.features.waterTitle}</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  {t.features.waterDesc}
-                </p>
-                <div className="inline-flex items-center gap-2 text-cyan-600 font-semibold">
-                  <span>{t.features.learnMore}</span>
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                  </svg>
-                </div>
-              </div>
-
-              {/* MRE Food Feature */}
-              <div className="group bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 border-2 border-amber-200 hover:border-amber-400 transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
-                <div className="bg-amber-500 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
-                  🍱
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{t.features.mreTitle}</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  {t.features.mreDesc}
-                </p>
-                <div className="inline-flex items-center gap-2 text-amber-600 font-semibold">
-                  <span>{t.features.learnMore}</span>
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                  </svg>
-                </div>
-              </div>
-
-              {/* Flashlight Feature */}
-              <div className="group bg-gradient-to-br from-purple-50 to-indigo-50 rounded-3xl p-8 border-2 border-purple-200 hover:border-purple-400 transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
-                <div className="bg-purple-500 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
-                  💡
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{t.features.flashlightTitle}</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  {t.features.flashlightDesc}
-                </p>
-                <div className="inline-flex items-center gap-2 text-purple-600 font-semibold">
-                  <span>{t.features.learnMore}</span>
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Mission Section - Bento Style */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="inline-block bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                {t.mission.badge}
-              </span>
-              <h2 className="text-5xl font-bold text-gray-900 mb-6">{t.mission.title}</h2>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-10 border-2 border-blue-200">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{t.mission.rmitTitle}</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  {t.mission.rmitDesc}
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl p-10 border-2 border-orange-200">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{t.mission.climateTitle}</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  {t.mission.climateDesc}
-                </p>
-              </div>
-
-              <div className="lg:col-span-2 bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-12 text-white border-2 border-blue-500 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-                <div className="relative z-10">
-                  <div className="inline-block bg-white/20 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                    {t.mission.missionBadge}
-                  </div>
-                  <p className="text-2xl font-semibold leading-relaxed">
-                    {t.mission.missionDesc}
+              <div style={{
+                background: 'white', padding: '1.5rem', borderRadius: '20px',
+                maxWidth: '400px', boxShadow: '0 4px 30px rgba(0,0,0,0.06)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <span style={{ fontSize: '1.5rem' }}>🛟</span>
+                  <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--color-ink-light)' }}>
+                    {t.hero.description}
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Products Section - Bento Style with 3 Tiers */}
-      <section id="products" className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="inline-block bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                {t.products.badge}
-              </span>
-              <h2 className="text-5xl font-bold text-gray-900 mb-6">{t.products.title}</h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                {t.products.subtitle}
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {/* Basic Kit */}
-              <div className="group bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden border-2 border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-xl">
-                <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2">{t.products.basicTitle}</h3>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold">{t.products.basicPrice}</span>
-                    <span className="text-gray-300">{t.products.currency}</span>
+              <div style={{ display: 'flex', gap: '3rem', marginTop: '2.5rem' }}>
+                <div>
+                  <div style={{
+                    fontFamily: 'var(--font-display)', fontSize: '2.5rem',
+                    fontWeight: 600, color: 'var(--color-accent)',
+                  }}>98%</div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--color-ink-muted)' }}>
+                    {t.hero.stats.disasters}
                   </div>
-                </div>
-
-                <div className="p-8">
-                  <p className="text-gray-600 mb-6 text-sm">
-                    {t.products.basicDesc}
-                  </p>
-
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-blue-600" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.basicLifeJacket}</div>
-                        <div className="text-sm text-gray-500">{t.products.basicLifeJacketPrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-blue-600" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.gps}</div>
-                        <div className="text-sm text-gray-500">{t.products.gpsPrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-blue-600" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.whistle}</div>
-                        <div className="text-sm text-gray-500">{t.products.whistlePrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-blue-600" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.mreHalf}</div>
-                        <div className="text-sm text-gray-500">{t.products.mreHalfPrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3 opacity-40">
-                      <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                      </div>
-                      <div className="font-semibold text-gray-500">{t.products.noWaterFilter}</div>
-                    </div>
-                    <div className="flex items-start gap-3 opacity-40">
-                      <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                      </div>
-                      <div className="font-semibold text-gray-500">{t.products.noFlashlight}</div>
-                    </div>
-                  </div>
-
-                  <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                    <p className="text-xs text-blue-600 font-semibold mb-1">{t.products.suitableFor}</p>
-                    <p className="text-sm text-gray-700">{t.products.basicSuit}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Medium Kit */}
-              <div className="group bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl overflow-hidden border-2 border-blue-300 hover:border-blue-400 transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1">
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-2xl font-bold">{t.products.mediumTitle}</h3>
-                    <span className="bg-blue-400 text-blue-900 text-xs font-bold px-3 py-1 rounded-full">{t.products.popular}</span>
-                  </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold">{t.products.mediumPrice}</span>
-                    <span className="text-blue-100">{t.products.currency}</span>
-                  </div>
-                </div>
-
-                <div className="p-8">
-                  <p className="text-gray-700 mb-6 text-sm">
-                    {t.products.mediumDesc}
-                  </p>
-
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.basicLifeJacket}</div>
-                        <div className="text-sm text-gray-500">{t.products.basicLifeJacketPrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.gps}</div>
-                        <div className="text-sm text-gray-500">{t.products.gpsPrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.whistle}</div>
-                        <div className="text-sm text-gray-500">{t.products.whistlePrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.mreOne}</div>
-                        <div className="text-sm text-gray-500">{t.products.mreOnePrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.lifeStraw}</div>
-                        <div className="text-sm text-gray-500">{t.products.lifeStrawPrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.basicFlashlight}</div>
-                        <div className="text-sm text-gray-500">{t.products.basicFlashlightPrice}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-blue-500 text-white p-4 rounded-xl">
-                    <p className="text-xs font-semibold mb-1 opacity-90">{t.products.suitableFor}</p>
-                    <p className="text-sm">{t.products.mediumSuit}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Premium Kit */}
-              <div className="group bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 rounded-3xl overflow-hidden border-2 border-orange-300 hover:border-orange-400 transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1">
-                <div className="bg-gradient-to-r from-orange-600 via-red-600 to-red-700 p-6 text-white relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-                  <div className="relative z-10">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="text-2xl font-bold">{t.products.premiumTitle}</h3>
-                      <span className="bg-yellow-400 text-red-900 text-xs font-bold px-3 py-1 rounded-full">{t.products.recommended}</span>
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-bold">{t.products.premiumPrice}</span>
-                      <span className="text-orange-100">{t.products.currency}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-8">
-                  <p className="text-gray-700 mb-6 text-sm">
-                    {t.products.premiumDesc}
-                  </p>
-
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.premiumLifeJacket}</div>
-                        <div className="text-sm text-gray-500">{t.products.premiumLifeJacketPrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.gps}</div>
-                        <div className="text-sm text-gray-500">{t.products.gpsPrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.whistle}</div>
-                        <div className="text-sm text-gray-500">{t.products.whistlePrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.mreOne}</div>
-                        <div className="text-sm text-gray-500">{t.products.mreOnePrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.lifeStraw}</div>
-                        <div className="text-sm text-gray-500">{t.products.lifeStrawPrice}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                          <path d="M5 13l4 4L19 7"></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">{t.products.premiumFlashlight}</div>
-                        <div className="text-sm text-gray-500">{t.products.premiumFlashlightPrice}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gradient-to-r from-orange-600 to-red-600 text-white p-4 rounded-xl">
-                    <p className="text-xs font-semibold mb-1 opacity-90">{t.products.suitableFor}</p>
-                    <p className="text-sm">{t.products.premiumSuit}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Comparison Note */}
-            <div className="mt-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 border-2 border-blue-200">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <svg className="w-6 h-6 text-white" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{t.products.allInclude}</h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {t.products.allIncludeDesc}
-                  </p>
+                  <div style={{
+                    fontFamily: 'var(--font-display)', fontSize: '2.5rem',
+                    fontWeight: 600, color: 'var(--color-accent)',
+                  }}>70%</div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--color-ink-muted)' }}>
+                    {t.hero.stats.population}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Content - Product Showcase */}
+            <div className={mounted ? 'animate-slide-in-right' : ''} style={{
+              position: 'relative', height: '700px', opacity: mounted ? 1 : 0,
+            }}>
+              <div className="animate-float-slow" style={{
+                position: 'absolute', top: '5%', right: '5%',
+                width: '85%', height: '75%', borderRadius: '30px',
+                overflow: 'hidden', boxShadow: '0 30px 80px rgba(0,0,0,0.15)',
+              }}>
+                <img src="/mock-1.png" alt="Flood in Vietnam" style={{
+                  width: '100%', height: '100%', objectFit: 'cover',
+                }} />
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.6), transparent)',
+                }} />
+                <div style={{
+                  position: 'absolute', bottom: '2rem', left: '2rem', right: '2rem',
+                  color: 'white',
+                }}>
+                  <p style={{ fontSize: '0.9rem', opacity: 0.9 }}>{t.impact.caption1}</p>
+                </div>
+                <div style={{
+                  position: 'absolute', top: '2rem', right: '1.5rem',
+                  writingMode: 'vertical-rl', textOrientation: 'mixed',
+                  fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.15em',
+                  color: 'white', textTransform: 'uppercase', opacity: 0.8,
+                }}>NOAH RESCUE</div>
+              </div>
+
+              <div className="animate-float" style={{
+                position: 'absolute', bottom: '15%', left: '-5%', width: '280px',
+                borderRadius: '24px', overflow: 'hidden',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+                transform: 'rotate(-5deg)', zIndex: 10,
+              }}>
+                <img src="/gps-tracking-app.png" alt="GPS Tracking App" style={{
+                  width: '100%', height: 'auto', display: 'block',
+                }} />
+              </div>
+
+              {/* Floating Badges */}
+              {[
+                { top: '15%', left: '0', icon: '📍', title: t.badges.gps, desc: t.badges.gpsDesc, color: '#10B981', delay: '0.5s' },
+                { top: '45%', right: '0', icon: '💧', title: t.badges.water, desc: t.badges.waterDesc, color: '#3B82F6', delay: '1s' },
+                { bottom: '5%', right: '15%', icon: '🆘', title: t.badges.sos, desc: t.badges.sosDesc, color: '#EF4444', delay: '1.5s' },
+              ].map((badge, i) => (
+                <div key={i} className="animate-float" style={{
+                  position: 'absolute', ...badge,
+                  background: 'white', padding: '1rem 1.25rem', borderRadius: '16px',
+                  boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+                  display: 'flex', alignItems: 'center', gap: '0.75rem',
+                  animationDelay: badge.delay,
+                }}>
+                  <div style={{
+                    width: '40px', height: '40px', borderRadius: '12px',
+                    background: `linear-gradient(135deg, ${badge.color}, ${badge.color}dd)`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem',
+                  }}>{badge.icon}</div>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-ink)' }}>{badge.title}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--color-ink-muted)' }}>{badge.desc}</div>
+                  </div>
+                </div>
+              ))}
+
+              <div style={{
+                position: 'absolute', bottom: '25%', right: '0',
+                display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end',
+              }}>
+                {['Waterproof', 'Lightweight', 'Durable', 'Life-saving'].map((tag, i) => (
+                  <span key={tag} style={{
+                    padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.9)',
+                    borderRadius: '100px', fontSize: '0.75rem', fontWeight: 500,
+                    color: 'var(--color-ink-light)', boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+                    opacity: mounted ? 1 : 0, transition: `opacity 0.5s ease ${0.2 + i * 0.1}s`,
+                  }}>{tag}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Impact Statistics Section */}
+        <section style={{ padding: '6rem 0', background: 'var(--color-ink)', color: 'white', position: 'relative', overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute', inset: 0, opacity: 0.1,
+            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundSize: '40px 40px',
+          }} />
+
+          <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem', position: 'relative' }}>
+            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+              <span style={{
+                display: 'inline-block', padding: '0.5rem 1rem',
+                background: 'rgba(255,255,255,0.1)', borderRadius: '100px',
+                fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.5rem',
+              }}>{t.impact.badge}</span>
+              <h2 style={{
+                fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                fontWeight: 600, marginBottom: '1rem',
+              }}>{t.impact.title}</h2>
+              <p style={{ fontSize: '1.1rem', opacity: 0.8, maxWidth: '600px', margin: '0 auto' }}>
+                {t.impact.subtitle}
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem', marginBottom: '4rem' }}>
+              {[
+                { ref: counter1.ref, count: counter1.count, suffix: 'T USD', label: t.impact.stat1, icon: '💰' },
+                { ref: counter2.ref, count: counter2.count, suffix: 'M+', label: t.impact.stat2, icon: '👥' },
+                { ref: counter3.ref, count: counter3.count, suffix: '', label: t.impact.stat3, icon: '📍' },
+                { ref: counter4.ref, count: counter4.count, suffix: '', label: t.impact.stat4, icon: '📅' },
+              ].map((stat, i) => (
+                <div key={i} ref={stat.ref} style={{
+                  textAlign: 'center', padding: '2rem',
+                  background: 'rgba(255,255,255,0.05)', borderRadius: '24px',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                }}>
+                  <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>{stat.icon}</div>
+                  <div style={{
+                    fontFamily: 'var(--font-display)', fontSize: '3.5rem',
+                    fontWeight: 600, color: '#60A5FA',
+                  }}>{stat.count}{stat.suffix}</div>
+                  <div style={{ fontSize: '0.9rem', opacity: 0.7, marginTop: '0.5rem' }}>{stat.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Image Gallery */}
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
+              <div style={{
+                borderRadius: '24px', overflow: 'hidden', position: 'relative',
+                height: '400px',
+              }}>
+                <img src="/mock-1.png" alt="Flood" style={{
+                  width: '100%', height: '100%', objectFit: 'cover',
+                }} />
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0,
+                  padding: '2rem', background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                }}>
+                  <p style={{ fontSize: '0.9rem' }}>{t.impact.caption1}</p>
+                </div>
+              </div>
+              <div style={{
+                borderRadius: '24px', overflow: 'hidden', position: 'relative',
+                height: '400px',
+              }}>
+                <img src="/mock-2.png" alt="Aerial flood view" style={{
+                  width: '100%', height: '100%', objectFit: 'cover',
+                }} />
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0,
+                  padding: '1.5rem', background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                }}>
+                  <p style={{ fontSize: '0.85rem' }}>{t.impact.caption2}</p>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Impact Section - Bento */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="inline-block bg-emerald-100 text-emerald-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                {t.sdg.badge}
-              </span>
-              <h2 className="text-5xl font-bold text-gray-900 mb-6">{t.sdg.title}</h2>
+        {/* Warning Section */}
+        <section style={{ padding: '5rem 0', background: '#1C1917' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <span style={{
+                display: 'inline-block', padding: '0.5rem 1rem',
+                background: 'rgba(220, 38, 38, 0.2)', color: '#FCA5A5',
+                borderRadius: '100px', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.5rem',
+                border: '1px solid rgba(220, 38, 38, 0.3)',
+              }}>{t.warning.badge}</span>
+              <h2 style={{
+                fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 3rem)',
+                fontWeight: 600, color: 'white', marginBottom: '0.5rem',
+              }}>{t.warning.title}</h2>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-10 border-2 border-emerald-200">
-                <div className="text-5xl mb-4">🏘️</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{t.sdg.sdg11}</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  <strong>{t.sdg.sdg11Target}</strong> {t.sdg.sdg11Desc}
-                </p>
-                <p className="text-gray-600 text-sm">
-                  {t.sdg.sdg11Detail}
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl p-10 border-2 border-cyan-200">
-                <div className="text-5xl mb-4">🌍</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{t.sdg.sdg13}</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  <strong>{t.sdg.sdg13Target}</strong> {t.sdg.sdg13Desc}
-                </p>
-                <p className="text-gray-600 text-sm">
-                  {t.sdg.sdg13Detail}
-                </p>
-              </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
+              {[
+                { ...t.warning.note1, color: '#DC2626' },
+                { ...t.warning.note2, color: '#F59E0B' },
+                { ...t.warning.note3, color: '#3B82F6' },
+                { ...t.warning.note4, color: '#8B5CF6' },
+              ].map((note, i) => (
+                <div key={i} style={{
+                  padding: '2rem',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderLeft: `4px solid ${note.color}`,
+                }}>
+                  <h3 style={{
+                    fontSize: '1.1rem', fontWeight: 600, color: 'white',
+                    marginBottom: '0.75rem', lineHeight: 1.4,
+                  }}>{note.title}</h3>
+                  <p style={{
+                    fontSize: '0.95rem', color: 'rgba(255,255,255,0.7)',
+                    lineHeight: 1.7,
+                  }}>{note.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-300 rounded-full blur-3xl"></div>
-        </div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-            {t.cta.title}
-          </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            {t.cta.subtitle}
-          </p>
-          <a
-            href="#waitlist"
-            className="inline-block bg-white text-blue-600 px-10 py-5 rounded-full font-bold text-lg hover:bg-blue-50 transition-all transform hover:scale-105 shadow-2xl"
-          >
-            {t.cta.button}
-          </a>
-        </div>
-      </section>
+        {/* How It Works Section */}
+        <section style={{ padding: '6rem 0', background: 'white' }}>
+          <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+              <span style={{
+                display: 'inline-block', padding: '0.5rem 1rem',
+                background: 'var(--color-accent-light)', color: 'var(--color-accent)',
+                borderRadius: '100px', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.5rem',
+              }}>{t.howItWorks.badge}</span>
+              <h2 style={{
+                fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+                fontWeight: 600, marginBottom: '1rem', color: 'var(--color-ink)',
+              }}>{t.howItWorks.title}</h2>
+              <p style={{ fontSize: '1.1rem', color: 'var(--color-ink-muted)', maxWidth: '600px', margin: '0 auto' }}>
+                {t.howItWorks.subtitle}
+              </p>
+            </div>
 
-      {/* Waitlist Section - Bento Form */}
-      <section id="waitlist" className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid lg:grid-cols-5 gap-6">
-              {/* Info Box */}
-              <div className="lg:col-span-2 space-y-6">
-                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl p-8 border-2 border-yellow-200">
-                  <div className="inline-block bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full text-sm font-bold mb-4">
-                    {t.waitlist.outOfStock}
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                    {t.waitlist.developmentTitle}
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {t.waitlist.developmentDesc}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem', position: 'relative' }}>
+              {/* Connection Line */}
+              <div style={{
+                position: 'absolute', top: '60px', left: '12.5%', right: '12.5%',
+                height: '2px', background: 'linear-gradient(90deg, var(--color-accent), var(--color-success))',
+                zIndex: 0,
+              }} />
+
+              {[
+                { num: '01', ...t.howItWorks.step1, icon: '🎒', color: '#3B82F6' },
+                { num: '02', ...t.howItWorks.step2, icon: '📡', color: '#8B5CF6' },
+                { num: '03', ...t.howItWorks.step3, icon: '🏊', color: '#F59E0B' },
+                { num: '04', ...t.howItWorks.step4, icon: '🚁', color: '#10B981' },
+              ].map((step, i) => (
+                <div key={i} style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+                  <div style={{
+                    width: '120px', height: '120px', borderRadius: '50%',
+                    background: `linear-gradient(135deg, ${step.color}20, ${step.color}10)`,
+                    border: `3px solid ${step.color}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    margin: '0 auto 1.5rem', fontSize: '3rem',
+                    boxShadow: `0 10px 40px ${step.color}30`,
+                  }}>{step.icon}</div>
+                  <div style={{
+                    fontFamily: 'var(--font-display)', fontSize: '0.9rem',
+                    color: step.color, fontWeight: 600, marginBottom: '0.5rem',
+                  }}>{step.num}</div>
+                  <h3 style={{
+                    fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.75rem',
+                    color: 'var(--color-ink)',
+                  }}>{step.title}</h3>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--color-ink-muted)', lineHeight: 1.6 }}>
+                    {step.desc}
                   </p>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 border-2 border-blue-200">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    {t.waitlist.specialOffer}
-                  </h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">
-                    {t.waitlist.specialOfferDesc}
-                  </p>
+        {/* Products Section */}
+        <section id="products" style={{ padding: '6rem 0', background: 'var(--color-cream)' }}>
+          <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
+            <div style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem',
+            }}>
+              <div>
+                <h2 style={{
+                  fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+                  fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-ink)',
+                }}>{t.products.title}</h2>
+                <p style={{ color: 'var(--color-ink-muted)', fontSize: '1.1rem' }}>{t.products.subtitle}</p>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 500 }}>
+                  <span style={{ color: 'var(--color-ink)' }}>{activeProduct + 1}</span>
+                  <span style={{ color: 'var(--color-ink-muted)' }}>/3</span>
+                </span>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  {[
+                    { dir: -1, icon: 'M19 12H5M12 19l-7-7 7-7' },
+                    { dir: 1, icon: 'M5 12h14M12 5l7 7-7 7' },
+                  ].map((btn, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setActiveProduct(prev => (prev + btn.dir + 3) % 3)}
+                      style={{
+                        width: '44px', height: '44px', borderRadius: '50%',
+                        border: '1.5px solid rgba(0,0,0,0.15)', background: 'white',
+                        cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d={btn.icon} />
+                      </svg>
+                    </button>
+                  ))}
                 </div>
               </div>
+            </div>
 
-              {/* Form Box */}
-              <div className="lg:col-span-3 bg-gradient-to-br from-gray-50 to-white rounded-3xl p-10 border-2 border-gray-200 shadow-xl">
-                <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                  {t.waitlist.formTitle}
-                </h2>
-                <p className="text-gray-600 mb-8">
-                  {t.waitlist.formSubtitle}
-                </p>
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-bold text-gray-700 mb-2">
-                      {t.waitlist.nameLabel}
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none text-gray-900 transition-colors"
-                      placeholder={t.waitlist.namePlaceholder}
-                    />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+              {products.map((product, i) => (
+                <div
+                  key={product.id}
+                  onClick={() => setActiveProduct(i)}
+                  onKeyDown={(e) => e.key === 'Enter' && setActiveProduct(i)}
+                  role="button"
+                  tabIndex={0}
+                  style={{
+                    position: 'relative', borderRadius: '24px', overflow: 'hidden', cursor: 'pointer',
+                    transition: 'all 0.4s ease',
+                    transform: activeProduct === i ? 'scale(1)' : 'scale(0.95)',
+                    opacity: activeProduct === i ? 1 : 0.6,
+                    boxShadow: activeProduct === i ? '0 20px 60px rgba(0,0,0,0.15)' : '0 10px 30px rgba(0,0,0,0.08)',
+                  }}
+                >
+                  <div style={{
+                    height: '300px',
+                    background: `linear-gradient(135deg, ${i === 0 ? '#F3F4F6, #E5E7EB' : i === 1 ? '#DBEAFE, #BFDBFE' : '#FEF3C7, #FDE68A'})`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative',
+                  }}>
+                    <img src={product.image} alt={product.name} style={{
+                      maxWidth: '90%', maxHeight: '90%', objectFit: 'cover', borderRadius: '16px',
+                      filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.15))',
+                    }} />
+                    {product.tag && (
+                      <span style={{
+                        position: 'absolute', top: '1rem', right: '1rem',
+                        padding: '0.4rem 0.8rem', background: i === 1 ? 'var(--color-accent)' : 'var(--color-warning)',
+                        color: 'white', fontSize: '0.7rem', fontWeight: 600, borderRadius: '100px',
+                        textTransform: 'uppercase', letterSpacing: '0.05em',
+                      }}>{product.tag}</span>
+                    )}
                   </div>
-
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-bold text-gray-700 mb-2">
-                      {t.waitlist.phoneLabel}
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none text-gray-900 transition-colors"
-                      placeholder={t.waitlist.phonePlaceholder}
-                    />
+                  <div style={{ padding: '1.5rem', background: 'white' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                      <h3 style={{
+                        fontFamily: 'var(--font-display)', fontSize: '1.5rem',
+                        fontWeight: 600, color: 'var(--color-ink)',
+                      }}>{product.name}</h3>
+                      <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-accent)' }}>
+                        {product.price}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--color-ink-muted)' }}>{product.desc}</p>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-2">
-                      {t.waitlist.emailLabel}
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none text-gray-900 transition-colors"
-                      placeholder={t.waitlist.emailPlaceholder}
-                    />
+        {/* Comparison Table */}
+        <section style={{ padding: '4rem 0', background: 'white' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 2rem' }}>
+            <h3 style={{
+              fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 600,
+              textAlign: 'center', marginBottom: '2rem', color: 'var(--color-ink)',
+            }}>{t.comparison.title}</h3>
+
+            <div style={{
+              borderRadius: '24px', overflow: 'hidden',
+              border: '1px solid rgba(0,0,0,0.1)', background: 'white',
+            }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ background: 'var(--color-ink)' }}>
+                    <th style={{ padding: '1.25rem', textAlign: 'left', color: 'white', fontWeight: 600 }}>{t.comparison.feature}</th>
+                    <th style={{ padding: '1.25rem', textAlign: 'center', color: 'white', fontWeight: 600 }}>{t.products.basic.name}</th>
+                    <th style={{ padding: '1.25rem', textAlign: 'center', color: 'white', fontWeight: 600, background: 'var(--color-accent)' }}>{t.products.medium.name}</th>
+                    <th style={{ padding: '1.25rem', textAlign: 'center', color: 'white', fontWeight: 600 }}>{t.products.premium.name}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { feature: t.comparison.lifeJacket, basic: t.comparison.basic, medium: t.comparison.basic, premium: t.comparison.premium },
+                    { feature: t.comparison.gps, basic: '✓', medium: '✓', premium: '✓' },
+                    { feature: t.comparison.whistle, basic: '✓', medium: '✓', premium: '✓' },
+                    { feature: t.comparison.food, basic: t.comparison.halfKg, medium: t.comparison.oneKg, premium: t.comparison.oneKg },
+                    { feature: t.comparison.waterFilter, basic: '✗', medium: '✓', premium: '✓' },
+                    { feature: t.comparison.flashlight, basic: '✗', medium: t.comparison.basic, premium: t.comparison.premium },
+                  ].map((row, i) => (
+                    <tr key={i} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+                      <td style={{ padding: '1rem 1.25rem', fontWeight: 500 }}>{row.feature}</td>
+                      <td style={{ padding: '1rem', textAlign: 'center', color: row.basic === '✗' ? 'var(--color-ink-muted)' : 'var(--color-ink)' }}>{row.basic}</td>
+                      <td style={{ padding: '1rem', textAlign: 'center', background: 'var(--color-accent-light)', fontWeight: 500 }}>{row.medium}</td>
+                      <td style={{ padding: '1rem', textAlign: 'center' }}>{row.premium}</td>
+                    </tr>
+                  ))}
+                  <tr style={{ background: 'var(--color-cream)' }}>
+                    <td style={{ padding: '1.25rem', fontWeight: 700, fontSize: '1.1rem' }}>{language === 'vi' ? 'Giá' : 'Price'}</td>
+                    <td style={{ padding: '1.25rem', textAlign: 'center', fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-accent)' }}>{language === 'vi' ? 'Liên hệ' : 'Contact us'}</td>
+                    <td style={{ padding: '1.25rem', textAlign: 'center', fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-accent)', background: 'var(--color-accent-light)' }}>{language === 'vi' ? 'Liên hệ' : 'Contact us'}</td>
+                    <td style={{ padding: '1.25rem', textAlign: 'center', fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-accent)' }}>{language === 'vi' ? 'Liên hệ' : 'Contact us'}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Detail Section */}
+        <section style={{ padding: '6rem 0', background: 'var(--color-cream)' }}>
+          <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
+            <h2 style={{
+              fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+              fontWeight: 600, textAlign: 'center', marginBottom: '4rem', color: 'var(--color-ink)',
+            }}>{t.features.title}</h2>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+              {[
+                { icon: '📍', ...t.features.gps, color: '#10B981', image: '/gps-tracking-app.png' },
+                { icon: '💧', ...t.features.water, color: '#3B82F6', image: '/mock-2.png' },
+                { icon: '🍱', ...t.features.food, color: '#F59E0B', image: '/mock-1.png' },
+                { icon: '🔦', ...t.features.light, color: '#8B5CF6', image: '/mock-2.png' },
+              ].map((feature, i) => (
+                <div key={i} className="hover-lift" style={{
+                  background: 'white', borderRadius: '24px', overflow: 'hidden',
+                  display: 'grid', gridTemplateColumns: '1fr 1fr',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+                }}>
+                  <div style={{ padding: '2rem' }}>
+                    <div style={{
+                      width: '64px', height: '64px', borderRadius: '16px',
+                      background: `${feature.color}15`, display: 'flex',
+                      alignItems: 'center', justifyContent: 'center', fontSize: '2rem', marginBottom: '1.5rem',
+                    }}>{feature.icon}</div>
+                    <h3 style={{
+                      fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.75rem', color: 'var(--color-ink)',
+                    }}>{feature.title}</h3>
+                    <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: 'var(--color-ink-muted)', marginBottom: '1.5rem' }}>
+                      {feature.desc}
+                    </p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                      {feature.specs.map((spec, j) => (
+                        <span key={j} style={{
+                          padding: '0.4rem 0.8rem', background: `${feature.color}10`,
+                          color: feature.color, borderRadius: '100px', fontSize: '0.75rem', fontWeight: 500,
+                        }}>{spec}</span>
+                      ))}
+                    </div>
                   </div>
+                  <div style={{
+                    background: `linear-gradient(135deg, ${feature.color}20, ${feature.color}10)`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem',
+                  }}>
+                    <img src={feature.image} alt={feature.title} style={{
+                      maxWidth: '100%', maxHeight: '200px', objectFit: 'contain', borderRadius: '12px',
+                    }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
+        {/* Testimonials Section */}
+        <section style={{ padding: '6rem 0', background: 'white' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 2rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <span style={{
+                display: 'inline-block', padding: '0.5rem 1rem',
+                background: 'var(--color-accent-light)', color: 'var(--color-accent)',
+                borderRadius: '100px', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.5rem',
+              }}>{t.testimonials.badge}</span>
+              <h2 style={{
+                fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 3rem)',
+                fontWeight: 600, color: 'var(--color-ink)',
+              }}>{t.testimonials.title}</h2>
+            </div>
+
+            <div style={{
+              background: 'var(--color-cream)', borderRadius: '32px', padding: '3rem',
+              textAlign: 'center', position: 'relative',
+            }}>
+              <div style={{ fontSize: '4rem', marginBottom: '1.5rem', opacity: 0.3 }}>"</div>
+              <p style={{
+                fontSize: '1.5rem', lineHeight: 1.6, color: 'var(--color-ink)',
+                fontFamily: 'var(--font-display)', fontStyle: 'italic', marginBottom: '2rem',
+                minHeight: '100px',
+              }}>
+                {testimonials[activeTestimonial].quote}
+              </p>
+              <div>
+                <p style={{ fontWeight: 600, color: 'var(--color-ink)' }}>{testimonials[activeTestimonial].name}</p>
+                <p style={{ fontSize: '0.9rem', color: 'var(--color-ink-muted)' }}>{testimonials[activeTestimonial].location}</p>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '2rem' }}>
+                {testimonials.map((_, i) => (
                   <button
-                    type="submit"
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveTestimonial(i)}
+                    style={{
+                      width: i === activeTestimonial ? '32px' : '12px', height: '12px',
+                      borderRadius: '100px', border: 'none', cursor: 'pointer',
+                      background: i === activeTestimonial ? 'var(--color-accent)' : 'rgba(0,0,0,0.1)',
+                      transition: 'all 0.3s ease',
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Mission Section */}
+        <section id="about" style={{
+          padding: '6rem 0', background: 'var(--color-ink)', color: 'white',
+          position: 'relative', overflow: 'hidden',
+        }}>
+          <div style={{
+            position: 'absolute', inset: 0, opacity: 0.05,
+            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundSize: '40px 40px',
+          }} />
+
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem', position: 'relative' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
+              <div>
+                <span style={{
+                  display: 'inline-block', padding: '0.5rem 1rem',
+                  background: 'rgba(255,255,255,0.1)', borderRadius: '100px',
+                  fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.5rem',
+                }}>{t.mission.badge}</span>
+                <h2 style={{
+                  fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                  fontWeight: 600, marginBottom: '1.5rem',
+                }}>{t.mission.title}</h2>
+                <p style={{ fontSize: '1.1rem', lineHeight: 1.8, opacity: 0.8, marginBottom: '2rem' }}>
+                  {t.mission.story}
+                </p>
+                <div style={{
+                  background: 'linear-gradient(135deg, var(--color-accent), #1D4ED8)',
+                  padding: '1.5rem 2rem', borderRadius: '20px',
+                }}>
+                  <p style={{
+                    fontFamily: 'var(--font-display)', fontSize: '1.25rem',
+                    fontStyle: 'italic', lineHeight: 1.6,
+                  }}>"{t.mission.mission}"</p>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gap: '1.5rem' }}>
+                <div style={{
+                  background: 'rgba(255,255,255,0.05)', borderRadius: '20px',
+                  padding: '2rem', border: '1px solid rgba(255,255,255,0.1)',
+                }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.75rem', color: '#60A5FA' }}>
+                    {t.mission.vision}
+                  </h3>
+                  <p style={{ fontSize: '0.95rem', opacity: 0.8, lineHeight: 1.6 }}>{t.mission.visionText}</p>
+                </div>
+                <div style={{
+                  background: 'rgba(255,255,255,0.05)', borderRadius: '20px',
+                  padding: '2rem', border: '1px solid rgba(255,255,255,0.1)',
+                }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1rem', color: '#60A5FA' }}>
+                    {t.mission.values}
+                  </h3>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                    {[t.mission.value1, t.mission.value2, t.mission.value3].map((value, i) => (
+                      <span key={i} style={{
+                        padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.1)',
+                        borderRadius: '100px', fontSize: '0.85rem',
+                      }}>{value}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SDG Section */}
+        <section style={{ padding: '6rem 0', background: 'var(--color-cream)' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 2rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <span style={{
+                display: 'inline-block', padding: '0.5rem 1rem',
+                background: '#D1FAE5', color: '#059669', borderRadius: '100px',
+                fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.5rem',
+              }}>{t.sdg.badge}</span>
+              <h2 style={{
+                fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 3rem)',
+                fontWeight: 600, color: 'var(--color-ink)',
+              }}>{t.sdg.title}</h2>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+              {[
+                { num: t.sdg.sdg11, title: t.sdg.sdg11Title, desc: t.sdg.sdg11Desc, color: '#F59E0B', icon: '🏘️' },
+                { num: t.sdg.sdg13, title: t.sdg.sdg13Title, desc: t.sdg.sdg13Desc, color: '#10B981', icon: '🌍' },
+              ].map((sdg, i) => (
+                <div key={i} style={{
+                  background: 'white', borderRadius: '24px', padding: '2rem',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+                  display: 'flex', gap: '1.5rem', alignItems: 'flex-start',
+                }}>
+                  <div style={{
+                    width: '80px', height: '80px', borderRadius: '16px',
+                    background: sdg.color, color: 'white',
+                    display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>
+                    <span style={{ fontSize: '1.5rem' }}>{sdg.icon}</span>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>{sdg.num}</span>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-ink)' }}>
+                      {sdg.title}
+                    </h3>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--color-ink-muted)', lineHeight: 1.6 }}>{sdg.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section style={{ padding: '6rem 0', background: 'white' }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 2rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <span style={{
+                display: 'inline-block', padding: '0.5rem 1rem',
+                background: 'var(--color-accent-light)', color: 'var(--color-accent)',
+                borderRadius: '100px', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.5rem',
+              }}>{t.faq.badge}</span>
+              <h2 style={{
+                fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 3rem)',
+                fontWeight: 600, color: 'var(--color-ink)',
+              }}>{t.faq.title}</h2>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {faqs.map((faq, i) => (
+                <div key={i} style={{
+                  background: 'var(--color-cream)', borderRadius: '16px', overflow: 'hidden',
+                }}>
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    style={{
+                      width: '100%', padding: '1.5rem', border: 'none', background: 'transparent',
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      cursor: 'pointer', textAlign: 'left',
+                    }}
                   >
-                    {t.waitlist.submitBtn}
+                    <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--color-ink)' }}>{faq.q}</span>
+                    <span style={{
+                      width: '32px', height: '32px', borderRadius: '50%',
+                      background: openFaq === i ? 'var(--color-accent)' : 'white',
+                      color: openFaq === i ? 'white' : 'var(--color-ink)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      transition: 'all 0.3s ease', transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0)',
+                    }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                  </button>
+                  <div style={{
+                    maxHeight: openFaq === i ? '200px' : '0', overflow: 'hidden',
+                    transition: 'max-height 0.3s ease',
+                  }}>
+                    <p style={{
+                      padding: '0 1.5rem 1.5rem', fontSize: '0.95rem',
+                      color: 'var(--color-ink-muted)', lineHeight: 1.7,
+                    }}>{faq.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Waitlist Section */}
+        <section id="waitlist" style={{ padding: '6rem 0', background: 'var(--color-cream)' }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '3rem', alignItems: 'start' }}>
+              <div>
+                <div style={{
+                  background: 'linear-gradient(135deg, #FEF3C7, #FDE68A)',
+                  borderRadius: '24px', padding: '2rem', marginBottom: '1.5rem',
+                }}>
+                  <span style={{
+                    display: 'inline-block', background: 'var(--color-warning)', color: 'white',
+                    padding: '0.4rem 0.8rem', borderRadius: '100px', fontSize: '0.75rem',
+                    fontWeight: 600, marginBottom: '1rem',
+                  }}>{t.waitlist.development}</span>
+                  <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: 'var(--color-ink-light)' }}>
+                    {t.waitlist.devDesc}
+                  </p>
+                </div>
+
+                <div style={{
+                  background: 'linear-gradient(135deg, #FEF2F2, #FEE2E2)',
+                  borderRadius: '24px', padding: '2rem', marginBottom: '1.5rem',
+                  borderLeft: '4px solid #DC2626',
+                }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem', color: '#991B1B' }}>
+                    ⚠️ {t.waitlist.urgentNote}
+                  </h3>
+                  <p style={{ fontSize: '0.9rem', color: '#7F1D1D' }}>{t.waitlist.urgentDesc}</p>
+                </div>
+
+                <div style={{
+                  background: 'white', borderRadius: '24px', padding: '2rem',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+                }}>
+                  <div style={{
+                    fontFamily: 'var(--font-display)', fontSize: '3rem',
+                    fontWeight: 600, color: 'var(--color-accent)', marginBottom: '0.5rem',
+                  }}>247+</div>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--color-ink-muted)' }}>{t.waitlist.registered}</p>
+                </div>
+              </div>
+
+              <div style={{
+                background: 'white', borderRadius: '32px', padding: '3rem',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
+              }}>
+                <h2 style={{
+                  fontFamily: 'var(--font-display)', fontSize: '2rem',
+                  fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-ink)',
+                }}>{t.waitlist.title}</h2>
+                <p style={{ fontSize: '1rem', color: 'var(--color-ink-muted)', marginBottom: '2rem' }}>
+                  {t.waitlist.subtitle}
+                </p>
+
+                <form onSubmit={handleSubmit}>
+                  {[
+                    { label: t.waitlist.name, type: 'text', key: 'name' as const },
+                    { label: t.waitlist.phone, type: 'tel', key: 'phone' as const },
+                    { label: t.waitlist.email, type: 'email', key: 'email' as const },
+                  ].map((field) => (
+                    <div key={field.key} style={{ marginBottom: '1.5rem' }}>
+                      <label htmlFor={field.key} style={{
+                        display: 'block', fontSize: '0.85rem', fontWeight: 600,
+                        marginBottom: '0.5rem', color: 'var(--color-ink)',
+                      }}>{field.label}</label>
+                      <input
+                        id={field.key}
+                        type={field.type}
+                        required
+                        value={formData[field.key]}
+                        onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
+                        style={{
+                          width: '100%', padding: '1rem 1.25rem', borderRadius: '12px',
+                          border: '2px solid #E5E7EB', fontSize: '1rem', outline: 'none',
+                          transition: 'border-color 0.3s ease',
+                        }}
+                      />
+                    </div>
+                  ))}
+
+                  <button type="submit" style={{
+                    width: '100%', padding: '1.25rem', borderRadius: '12px', border: 'none',
+                    background: submitted ? 'var(--color-success)' : 'var(--color-ink)',
+                    color: 'white', fontSize: '1rem', fontWeight: 600, cursor: 'pointer',
+                    transition: 'all 0.3s ease', display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', gap: '0.5rem',
+                  }}>
+                    {submitted ? (
+                      <>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                        {t.waitlist.success}
+                      </>
+                    ) : (
+                      <>
+                        {t.waitlist.submit}
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                      </>
+                    )}
                   </button>
                 </form>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Contact Section - Bento Grid */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="inline-block bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                {t.contact.badge}
-              </span>
-              <h2 className="text-5xl font-bold text-gray-900 mb-6">{t.contact.title}</h2>
-            </div>
+        {/* Contact Section */}
+        <section id="contact" style={{ padding: '6rem 0', background: 'white' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+            <h2 style={{
+              fontFamily: 'var(--font-display)', fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+              fontWeight: 600, textAlign: 'center', marginBottom: '4rem', color: 'var(--color-ink)',
+            }}>{t.contact.title}</h2>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl p-10 text-white">
-                <div className="text-4xl mb-4">📞</div>
-                <h3 className="text-xl font-bold mb-3">{t.contact.hotlineTitle}</h3>
-                <a href="tel:+84792774510" className="text-3xl font-bold hover:text-blue-100 transition-colors inline-block">
-                  (+84) 792774510
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
+              {[
+                { icon: '📞', title: t.contact.hotline, value: '(+84) 792 774 510', href: 'tel:+84792774510', color: '#3B82F6' },
+                { icon: '✉️', title: t.contact.email, value: 'noah@gmail.com.vn', href: 'mailto:noah@gmail.com.vn', color: '#8B5CF6' },
+                { icon: '🤝', title: t.contact.partner, value: '(+84) 979 744 571', href: 'tel:+84979744571', color: '#10B981' },
+                { icon: '📍', title: t.contact.address, value: t.contact.addressText, href: '#', color: '#F59E0B' },
+              ].map((contact, i) => (
+                <a key={i} href={contact.href} style={{
+                  background: `linear-gradient(135deg, ${contact.color}, ${contact.color}dd)`,
+                  borderRadius: '24px', padding: '2rem', color: 'white', textDecoration: 'none',
+                  display: 'block', transition: 'transform 0.3s ease',
+                }}>
+                  <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>{contact.icon}</div>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.75rem', opacity: 0.9 }}>
+                    {contact.title}
+                  </h3>
+                  <p style={{ fontSize: '1rem', fontWeight: 600 }}>{contact.value}</p>
                 </a>
-                <p className="text-blue-100 text-sm mt-3">{t.contact.hotlineSupport}</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-3xl p-10 text-white">
-                <div className="text-4xl mb-4">✉️</div>
-                <h3 className="text-xl font-bold mb-3">{t.contact.emailTitle}</h3>
-                <a href="mailto:noah@gmail.com.vn" className="text-2xl font-bold hover:text-purple-100 transition-colors break-all inline-block">
-                  noah@gmail.com.vn
-                </a>
-                <p className="text-purple-100 text-sm mt-3">{t.contact.emailResponse}</p>
-              </div>
-
-              <div className="md:col-span-2 bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-10 text-white">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="text-4xl">🤝</div>
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2">{t.contact.partnerTitle}</h3>
-                    <p className="text-gray-300 text-sm">{t.contact.partnerDesc}</p>
-                  </div>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm border border-white/20">
-                    <p className="text-sm text-gray-300 mb-2">{t.contact.vietnamese}</p>
-                    <a href="tel:+84979744571" className="text-xl font-bold hover:text-gray-200 transition-colors">
-                      (+84) 0979744571
-                    </a>
-                  </div>
-                  <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm border border-white/20">
-                    <p className="text-sm text-gray-300 mb-2">{t.contact.english}</p>
-                    <a href="tel:+84979744571" className="text-xl font-bold hover:text-gray-200 transition-colors">
-                      (+84) 0979744571
-                    </a>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-12 mb-12">
+        {/* Footer */}
+        <footer style={{ background: 'var(--color-ink)', color: 'white', padding: '4rem 0 2rem' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+            <div style={{
+              display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '4rem', marginBottom: '3rem',
+            }}>
               <div>
-                <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">NOAH</h3>
-                <p className="text-gray-400 leading-relaxed">
-                  {t.footer.tagline}
-                </p>
+                <span style={{
+                  fontFamily: 'var(--font-display)', fontSize: '2.5rem', fontWeight: 700,
+                }}>NOAH</span>
+                <p style={{
+                  fontSize: '1rem', opacity: 0.7, marginTop: '1rem', maxWidth: '300px', lineHeight: 1.6,
+                }}>{t.footer.tagline}</p>
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+                  {[
+                    { bg: '#10B981', num: '11' },
+                    { bg: '#3B82F6', num: '13' },
+                  ].map((sdg, i) => (
+                    <div key={i} style={{
+                      width: '48px', height: '48px', background: sdg.bg, borderRadius: '12px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700,
+                    }}>{sdg.num}</div>
+                  ))}
+                </div>
               </div>
+
               <div>
-                <h4 className="font-bold text-lg mb-4 text-blue-400">{t.footer.aboutTitle}</h4>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {t.footer.aboutDesc}
-                </p>
+                <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1.5rem', color: '#60A5FA' }}>Quick Links</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {[t.nav.home, t.nav.products, t.nav.about, t.nav.contact].map((link, i) => (
+                    <a key={i} href={`#${link.toLowerCase()}`} style={{
+                      color: 'white', opacity: 0.7, textDecoration: 'none', fontSize: '0.9rem',
+                      transition: 'opacity 0.3s ease',
+                    }}>{link}</a>
+                  ))}
+                </div>
               </div>
+
               <div>
-                <h4 className="font-bold text-lg mb-4 text-blue-400">{t.footer.sdgTitle}</h4>
-                <div className="flex gap-3">
-                  <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center font-bold">11</div>
-                  <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center font-bold">13</div>
+                <h4 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1.5rem', color: '#60A5FA' }}>Legal</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {[t.footer.privacy, t.footer.terms].map((link, i) => (
+                    <a key={i} href="#" style={{
+                      color: 'white', opacity: 0.7, textDecoration: 'none', fontSize: '0.9rem',
+                    }}>{link}</a>
+                  ))}
                 </div>
               </div>
             </div>
-            <div className="border-t border-gray-700 pt-8 text-center">
-              <p className="text-gray-500 text-sm">
-                {t.footer.copyright}
-              </p>
+
+            <div style={{
+              borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem',
+            }}>
+              <p style={{ fontSize: '0.85rem', opacity: 0.6 }}>{t.footer.copyright}</p>
+              <p style={{ fontSize: '0.85rem', opacity: 0.6 }}>{t.footer.project}</p>
             </div>
           </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </>
   );
 }
