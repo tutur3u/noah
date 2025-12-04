@@ -1,17 +1,23 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
+const roboto = Roboto({
+	subsets: ["latin", "vietnamese"],
+	weight: ["100", "300", "400", "500", "700", "900"],
+	variable: "--font-oxygen",
 });
 
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
-	subsets: ["latin"],
+const robotoMono = Roboto_Mono({
+	subsets: ["latin", "vietnamese"],
+	weight: ["100", "300", "400", "500", "700"],
+	variable: "--font-oxygen-mono",
 });
+
+const font = {
+	variable: `${roboto.variable} ${robotoMono.variable}`,
+};
 
 export const metadata: Metadata = {
 	title: "NOAH - Bộ Cứu Hộ Khẩn Cấp",
@@ -26,9 +32,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="vi">
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-			>
+			<body className={`${font.variable} antialiased`}>
 				<Analytics />
 				{children}
 			</body>
