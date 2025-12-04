@@ -3151,7 +3151,7 @@ export default function Home() {
 					</div>
 				</section>
 
-				{/* Comparison Table */}
+				{/* What's Included Section */}
 				<section style={{ padding: "4rem 0", background: "var(--brand-dark)" }}>
 					<div
 						style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 2rem" }}
@@ -3161,213 +3161,319 @@ export default function Home() {
 								fontSize: "1.75rem",
 								fontWeight: 700,
 								textAlign: "center",
-								marginBottom: "2rem",
+								marginBottom: "0.5rem",
 								color: "var(--text-primary)",
 								letterSpacing: "0.05em",
 							}}
 						>
-							{t.comparison.title}
+							{language === "vi" ? "Bộ Kit Bao Gồm" : "What's Included"}
 						</h3>
-
-						<div
-							className="glass-panel"
+						<p
 							style={{
-								borderRadius: "8px",
-								overflow: "hidden",
+								textAlign: "center",
+								color: "var(--text-secondary)",
+								marginBottom: "2rem",
+								fontSize: "1rem",
 							}}
 						>
-							<table style={{ width: "100%", borderCollapse: "collapse" }}>
-								<thead>
-									<tr style={{ background: "var(--brand-surface-light)" }}>
-										<th
-											style={{
-												padding: "1rem",
-												textAlign: "left",
-												color: "var(--text-primary)",
-												fontWeight: 600,
-												fontSize: "0.85rem",
-												textTransform: "uppercase",
-												letterSpacing: "0.05em",
-											}}
-										>
-											{t.comparison.feature}
-										</th>
-										<th
-											style={{
-												padding: "1rem",
-												textAlign: "center",
-												color: "var(--text-secondary)",
-												fontWeight: 600,
-												fontSize: "0.85rem",
-											}}
-										>
-											{t.products.basic.name}
-										</th>
-										<th
-											style={{
-												padding: "1rem",
-												textAlign: "center",
-												color: "var(--brand-orange)",
-												fontWeight: 600,
-												fontSize: "0.85rem",
-												background: "rgba(249, 115, 22, 0.1)",
-											}}
-										>
-											{t.products.medium.name}
-										</th>
-										<th
-											style={{
-												padding: "1rem",
-												textAlign: "center",
-												color: "var(--text-secondary)",
-												fontWeight: 600,
-												fontSize: "0.85rem",
-											}}
-										>
-											{t.products.premium.name}
-										</th>
-									</tr>
-								</thead>
-								<tbody>
+							{language === "vi"
+								? "Tất cả các vật dụng thiết yếu trong một bộ kit"
+								: "All essential items in one complete kit"}
+						</p>
+
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "1fr 1fr",
+								gap: "2rem",
+							}}
+						>
+							{/* Base Package */}
+							<div
+								className="glass-panel"
+								style={{
+									borderRadius: "16px",
+									padding: "2rem",
+									border: "2px solid var(--brand-cyan)",
+									position: "relative",
+								}}
+							>
+								<div
+									style={{
+										position: "absolute",
+										top: "-12px",
+										left: "50%",
+										transform: "translateX(-50%)",
+										background: "var(--brand-cyan)",
+										color: "#ffffff",
+										padding: "0.35rem 1.5rem",
+										borderRadius: "20px",
+										fontSize: "0.8rem",
+										fontWeight: 600,
+										textTransform: "uppercase",
+										letterSpacing: "0.05em",
+									}}
+								>
+									{language === "vi" ? "Gói Cơ Bản" : "Base Package"}
+								</div>
+
+								<div style={{ marginTop: "1rem" }}>
 									{[
 										{
 											feature: t.comparison.lifeJacket,
-											basic: t.comparison.basic,
-											medium: t.comparison.basic,
-											premium: t.comparison.premium,
+											detail: t.comparison.basic,
+											icon: "🦺",
 										},
 										{
 											feature: t.comparison.gps,
-											basic: "●",
-											medium: "●",
-											premium: "●",
+											detail: language === "vi" ? "Có" : "Included",
+											icon: "📍",
 										},
 										{
 											feature: t.comparison.whistle,
-											basic: "●",
-											medium: "●",
-											premium: "●",
+											detail: language === "vi" ? "Có" : "Included",
+											icon: "📯",
 										},
 										{
 											feature: t.comparison.food,
-											basic: t.comparison.halfKg,
-											medium: t.comparison.oneKg,
-											premium: t.comparison.oneKg,
+											detail: t.comparison.halfKg,
+											icon: "🍞",
 										},
+									].map((item, i) => (
+										<div
+											key={i}
+											style={{
+												display: "flex",
+												alignItems: "center",
+												gap: "1rem",
+												padding: "1rem",
+												marginBottom: "0.5rem",
+												background: "rgba(6, 182, 212, 0.05)",
+												borderRadius: "10px",
+												border: "1px solid rgba(6, 182, 212, 0.1)",
+											}}
+										>
+											<span style={{ fontSize: "1.5rem" }}>{item.icon}</span>
+											<div style={{ flex: 1 }}>
+												<div
+													style={{
+														color: "var(--text-primary)",
+														fontWeight: 500,
+														fontSize: "0.95rem",
+													}}
+												>
+													{item.feature}
+												</div>
+												<div
+													style={{
+														color: "var(--brand-cyan)",
+														fontSize: "0.8rem",
+														marginTop: "0.2rem",
+													}}
+												>
+													{item.detail}
+												</div>
+											</div>
+											<div
+												style={{
+													color: "var(--brand-success)",
+													fontSize: "1.2rem",
+												}}
+											>
+												✓
+											</div>
+										</div>
+									))}
+								</div>
+
+								<div
+									style={{
+										marginTop: "1.5rem",
+										textAlign: "center",
+										padding: "1rem",
+										background: "rgba(6, 182, 212, 0.1)",
+										borderRadius: "10px",
+									}}
+								>
+									<div
+										style={{
+											fontSize: "0.85rem",
+											color: "var(--text-secondary)",
+											marginBottom: "0.25rem",
+										}}
+									>
+										{language === "vi" ? "Giá từ" : "Starting at"}
+									</div>
+									<div
+										style={{
+											fontSize: "1.5rem",
+											fontWeight: 700,
+											color: "var(--brand-cyan)",
+										}}
+									>
+										{language === "vi" ? "Liên hệ" : "Contact us"}
+									</div>
+								</div>
+							</div>
+
+							{/* Optional Add-ons */}
+							<div
+								className="glass-panel"
+								style={{
+									borderRadius: "16px",
+									padding: "2rem",
+									border: "2px solid rgba(251, 146, 60, 0.3)",
+									position: "relative",
+								}}
+							>
+								<div
+									style={{
+										position: "absolute",
+										top: "-12px",
+										left: "50%",
+										transform: "translateX(-50%)",
+										background: "var(--brand-orange)",
+										color: "#ffffff",
+										padding: "0.35rem 1.5rem",
+										borderRadius: "20px",
+										fontSize: "0.8rem",
+										fontWeight: 600,
+										textTransform: "uppercase",
+										letterSpacing: "0.05em",
+									}}
+								>
+									{language === "vi" ? "Nâng Cấp Tùy Chọn" : "Optional Add-ons"}
+								</div>
+
+								<div style={{ marginTop: "1rem" }}>
+									{[
 										{
 											feature: t.comparison.waterFilter,
-											basic: "○",
-											medium: "●",
-											premium: "●",
+											detail: language === "vi" ? "LifeStraw" : "LifeStraw Filter",
+											icon: "💧",
 										},
 										{
 											feature: t.comparison.flashlight,
-											basic: "○",
-											medium: t.comparison.basic,
-											premium: t.comparison.premium,
+											detail: language === "vi" ? "Đèn LED cao cấp" : "Premium LED",
+											icon: "🔦",
 										},
-									].map((row, i) => (
-										<tr
+										{
+											feature: t.comparison.food,
+											detail: language === "vi" ? "Nâng lên 1kg" : "Upgrade to 1kg",
+											icon: "📦",
+										},
+										{
+											feature: t.comparison.lifeJacket,
+											detail: language === "vi" ? "Nâng cấp cao cấp" : "Premium upgrade",
+											icon: "⭐",
+										},
+									].map((item, i) => (
+										<div
 											key={i}
 											style={{
-												borderBottom: "1px solid rgba(6, 182, 212, 0.1)",
+												display: "flex",
+												alignItems: "center",
+												gap: "1rem",
+												padding: "1rem",
+												marginBottom: "0.5rem",
+												background: "rgba(251, 146, 60, 0.05)",
+												borderRadius: "10px",
+												border: "1px solid rgba(251, 146, 60, 0.1)",
 											}}
 										>
-											<td
+											<span style={{ fontSize: "1.5rem" }}>{item.icon}</span>
+											<div style={{ flex: 1 }}>
+												<div
+													style={{
+														color: "var(--text-primary)",
+														fontWeight: 500,
+														fontSize: "0.95rem",
+													}}
+												>
+													{item.feature}
+												</div>
+												<div
+													style={{
+														color: "var(--brand-orange)",
+														fontSize: "0.8rem",
+														marginTop: "0.2rem",
+													}}
+												>
+													{item.detail}
+												</div>
+											</div>
+											<div
 												style={{
-													padding: "0.85rem 1rem",
-													fontWeight: 500,
-													color: "var(--text-primary)",
-													fontSize: "0.9rem",
-												}}
-											>
-												{row.feature}
-											</td>
-											<td
-												style={{
-													padding: "0.85rem",
-													textAlign: "center",
-													color:
-														row.basic === "○"
-															? "var(--text-muted)"
-															: "var(--brand-success)",
-													fontSize: "0.9rem",
-												}}
-											>
-												{row.basic}
-											</td>
-											<td
-												style={{
-													padding: "0.85rem",
-													textAlign: "center",
-													background: "rgba(249, 115, 22, 0.05)",
-													fontWeight: 500,
 													color: "var(--brand-orange)",
-													fontSize: "0.9rem",
+													fontSize: "0.85rem",
+													fontWeight: 600,
+													padding: "0.25rem 0.75rem",
+													background: "rgba(251, 146, 60, 0.1)",
+													borderRadius: "15px",
 												}}
 											>
-												{row.medium}
-											</td>
-											<td
-												style={{
-													padding: "0.85rem",
-													textAlign: "center",
-													color: "var(--brand-cyan)",
-													fontSize: "0.9rem",
-												}}
-											>
-												{row.premium}
-											</td>
-										</tr>
+												+
+											</div>
+										</div>
 									))}
-									<tr style={{ background: "var(--brand-surface)" }}>
-										<td
-											style={{
-												padding: "1rem",
-												fontWeight: 700,
-												fontSize: "0.95rem",
-												color: "var(--text-primary)",
-											}}
-										>
-											{language === "vi" ? "Giá" : "Price"}
-										</td>
-										<td
-											style={{
-												padding: "1rem",
-												textAlign: "center",
-												fontWeight: 600,
-												fontSize: "0.85rem",
-												color: "var(--brand-cyan)",
-											}}
-										>
-											{language === "vi" ? "Liên hệ" : "Contact us"}
-										</td>
-										<td
-											style={{
-												padding: "1rem",
-												textAlign: "center",
-												fontWeight: 600,
-												fontSize: "0.85rem",
-												color: "var(--brand-orange)",
-												background: "rgba(249, 115, 22, 0.1)",
-											}}
-										>
-											{language === "vi" ? "Liên hệ" : "Contact us"}
-										</td>
-										<td
-											style={{
-												padding: "1rem",
-												textAlign: "center",
-												fontWeight: 600,
-												fontSize: "0.85rem",
-												color: "var(--brand-cyan)",
-											}}
-										>
-											{language === "vi" ? "Liên hệ" : "Contact us"}
-										</td>
-									</tr>
-								</tbody>
-							</table>
+								</div>
+
+								<div
+									style={{
+										marginTop: "1.5rem",
+										textAlign: "center",
+										padding: "1rem",
+										background: "rgba(251, 146, 60, 0.1)",
+										borderRadius: "10px",
+									}}
+								>
+									<div
+										style={{
+											fontSize: "0.85rem",
+											color: "var(--text-secondary)",
+											marginBottom: "0.25rem",
+										}}
+									>
+										{language === "vi" ? "Tùy chỉnh theo nhu cầu" : "Customize to your needs"}
+									</div>
+									<div
+										style={{
+											fontSize: "1rem",
+											fontWeight: 600,
+											color: "var(--brand-orange)",
+										}}
+									>
+										{language === "vi" ? "Liên hệ để báo giá" : "Contact for pricing"}
+									</div>
+								</div>
+							</div>
+						</div>
+
+						{/* CTA */}
+						<div style={{ textAlign: "center", marginTop: "2rem" }}>
+							<button
+								onClick={() => {
+									const waitlistSection = document.getElementById("contact");
+									if (waitlistSection) {
+										waitlistSection.scrollIntoView({ behavior: "smooth" });
+									}
+								}}
+								style={{
+									padding: "1rem 3rem",
+									fontSize: "1rem",
+									fontWeight: 600,
+									color: "#ffffff",
+									background: "linear-gradient(135deg, var(--brand-orange) 0%, #f97316 100%)",
+									border: "none",
+									borderRadius: "50px",
+									cursor: "pointer",
+									textTransform: "uppercase",
+									letterSpacing: "0.05em",
+									transition: "all 0.3s ease",
+								}}
+							>
+								{language === "vi" ? "Liên hệ ngay" : "Contact Us"}
+							</button>
 						</div>
 					</div>
 				</section>
