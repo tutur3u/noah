@@ -90,28 +90,6 @@ const translations = {
 				desc: "Đội cứu hộ định vị và tiếp cận bạn nhanh chóng nhờ tín hiệu GPS.",
 			},
 		},
-		products: {
-			title: "Chọn Gói Phù Hợp",
-			subtitle: "Ba gói sản phẩm được thiết kế để đáp ứng mọi nhu cầu",
-			basic: {
-				name: "Cơ Bản",
-				price: "Liên hệ",
-				desc: "Sinh tồn ngắn hạn",
-			},
-			medium: {
-				name: "Trung Cấp",
-				price: "Liên hệ",
-				desc: "Bảo vệ toàn diện",
-				tag: "Phổ biến",
-			},
-			premium: {
-				name: "Cao Cấp",
-				price: "Liên hệ",
-				desc: "Trang bị đầy đủ",
-				tag: "Khuyến nghị",
-			},
-			compare: "So sánh chi tiết",
-		},
 		comparison: {
 			title: "So sánh các gói",
 			feature: "Tính năng",
@@ -615,8 +593,8 @@ function useCounter(
 
 export default function Home() {
 	const [language, setLanguage] = useState<Language>("vi");
+	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [mounted, setMounted] = useState(false);
-	const [activeProduct, setActiveProduct] = useState(1);
 	const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
 	const [submitted, setSubmitted] = useState(false);
 	const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -647,32 +625,6 @@ export default function Home() {
 		setTimeout(() => setSubmitted(false), 3000);
 		setFormData({ name: "", phone: "", email: "" });
 	};
-
-	const products = [
-		{
-			id: 0,
-			name: t.products.basic.name,
-			price: t.products.basic.price,
-			desc: t.products.basic.desc,
-			image: "/mock-1.png",
-		},
-		{
-			id: 1,
-			name: t.products.medium.name,
-			price: t.products.medium.price,
-			desc: t.products.medium.desc,
-			tag: t.products.medium.tag,
-			image: "/mock-2.png",
-		},
-		{
-			id: 2,
-			name: t.products.premium.name,
-			price: t.products.premium.price,
-			desc: t.products.premium.desc,
-			tag: t.products.premium.tag,
-			image: "/mock-1.png",
-		},
-	];
 
 	const testimonials = [
 		t.testimonials.t1,
@@ -852,13 +804,843 @@ export default function Home() {
         .status-active { background: var(--brand-success); }
         .status-warning { background: var(--brand-orange); }
         .status-alert { background: var(--brand-alert); }
+
+        /* ============================================
+           RESPONSIVE STYLES - Mobile First Approach
+           ============================================ */
+
+        /* Mobile Navigation */
+        .mobile-menu-btn {
+          display: none;
+          flex-direction: column;
+          gap: 5px;
+          padding: 10px;
+          background: transparent;
+          border: 1px solid var(--brand-cyan);
+          border-radius: 8px;
+          cursor: pointer;
+        }
+        .mobile-menu-btn span {
+          width: 24px;
+          height: 2px;
+          background: var(--brand-cyan);
+          transition: all 0.3s ease;
+        }
+
+        /* Responsive Container */
+        .responsive-container {
+          width: 100%;
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 0 2rem;
+        }
+
+        /* Responsive Grid */
+        .responsive-grid-2 {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2rem;
+        }
+        .responsive-grid-3 {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+        }
+        .responsive-grid-4 {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1.5rem;
+        }
+
+        /* Tablet Breakpoint - 1024px */
+        @media (max-width: 1024px) {
+          .responsive-container {
+            padding: 0 1.5rem;
+          }
+          .responsive-grid-4 {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .responsive-grid-3 {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        /* Mobile Breakpoint - 768px */
+        @media (max-width: 768px) {
+          .mobile-menu-btn {
+            display: flex;
+          }
+          .desktop-nav {
+            display: none;
+          }
+          .mobile-nav {
+            display: flex;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: rgba(2, 6, 23, 0.98);
+            backdrop-filter: blur(20px);
+            flex-direction: column;
+            padding: 1rem;
+            border-bottom: 1px solid var(--brand-cyan);
+            z-index: 999;
+          }
+          .mobile-nav a {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.1);
+          }
+          .responsive-container {
+            padding: 0 1rem;
+          }
+          .responsive-grid-2,
+          .responsive-grid-3,
+          .responsive-grid-4 {
+            grid-template-columns: 1fr;
+          }
+
+          /* Typography scaling for mobile */
+          h1 { font-size: 2.5rem !important; }
+          h2 { font-size: 1.75rem !important; }
+          h3 { font-size: 1.25rem !important; }
+        }
+
+        /* Small Mobile Breakpoint - 480px */
+        @media (max-width: 480px) {
+          .responsive-container {
+            padding: 0 0.75rem;
+          }
+          h1 { font-size: 2rem !important; }
+          h2 { font-size: 1.5rem !important; }
+          h3 { font-size: 1.1rem !important; }
+        }
+
+        /* Visibility helpers */
+        .mobile-only { display: none !important; }
+        .hide-mobile { display: block; }
+        .hide-tablet { display: block; }
+
+        @media (max-width: 1024px) {
+          .hide-tablet { display: none !important; }
+        }
+
+        @media (max-width: 768px) {
+          .mobile-only { display: flex !important; }
+          .desktop-nav { display: none !important; }
+          .hide-mobile { display: none !important; }
+        }
+
+        /* Hero Section Responsive */
+        .hero-grid {
+          display: grid;
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: 2rem;
+          align-items: center;
+        }
+        .hero-section {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          padding-top: 100px;
+          padding-bottom: 4rem;
+          position: relative;
+          overflow: hidden;
+        }
+        @media (max-width: 1024px) {
+          .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+          .hero-phone-mockup {
+            display: none;
+          }
+          .hero-content {
+            text-align: center;
+          }
+          .hero-content .system-status-bar {
+            justify-content: center;
+          }
+          .hero-content p {
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .hero-content > div {
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .hero-content button {
+            margin-left: auto;
+            margin-right: auto;
+          }
+        }
+        @media (max-width: 768px) {
+          .hero-section {
+            padding-top: 90px;
+            min-height: auto;
+            padding-bottom: 2rem;
+          }
+          .hero-grid {
+            padding: 2rem 1rem 0;
+          }
+          .hero-phone-mockup {
+            display: none;
+          }
+          .hero-title {
+            font-size: 2.5rem !important;
+          }
+          .hero-subtitle {
+            font-size: 1rem !important;
+          }
+        }
+
+        /* Feature Badges - Mobile Version */
+        .feature-badges-mobile {
+          display: none;
+        }
+        @media (max-width: 1024px) {
+          .feature-badges-mobile {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+            width: 100%;
+          }
+        }
+        @media (max-width: 600px) {
+          .feature-badges-mobile {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+          }
+        }
+        .feature-badge-item {
+          padding: 1rem;
+          background: rgba(15, 23, 42, 0.9);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(6, 182, 212, 0.2);
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+        .feature-badge-icon {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.1rem;
+          flex-shrink: 0;
+        }
+        .feature-badge-text h4 {
+          font-weight: 600;
+          font-size: 0.85rem;
+          color: var(--text-primary);
+          margin: 0;
+        }
+        .feature-badge-text p {
+          font-size: 0.7rem;
+          color: var(--text-muted);
+          margin: 0.25rem 0 0;
+        }
+        @media (max-width: 480px) {
+          .hero-title {
+            font-size: 2rem !important;
+          }
+          .hero-phone-mockup {
+            display: none;
+          }
+        }
+
+        /* Hero Stats Row Responsive */
+        .hero-stats-row {
+          display: flex;
+          gap: 1.5rem;
+          margin-bottom: 2rem;
+        }
+        @media (max-width: 1024px) {
+          .hero-stats-row {
+            justify-content: center;
+          }
+        }
+        @media (max-width: 768px) {
+          .hero-stats-row {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+          }
+          .hero-stats-row > div {
+            width: 100%;
+            max-width: 280px;
+          }
+        }
+
+        /* Hero Decorative Glows - Hide on mobile */
+        .hero-glow-orb {
+          position: absolute;
+          border-radius: 50%;
+        }
+        @media (max-width: 768px) {
+          .hero-glow-orb {
+            display: none;
+          }
+        }
+
+        /* Hero Coordinate Label Responsive */
+        .hero-coord-label {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+        }
+        @media (max-width: 1024px) {
+          .hero-coord-label {
+            justify-content: center;
+          }
+        }
+        @media (max-width: 768px) {
+          .hero-coord-label {
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+          }
+        }
+
+        /* Section Padding Responsive */
+        .section-padding {
+          padding: 6rem 2rem;
+        }
+        @media (max-width: 768px) {
+          .section-padding {
+            padding: 3rem 1rem;
+          }
+        }
+
+        /* Card Grid Responsive */
+        .card-grid-3 {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+        }
+        .card-grid-2 {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2rem;
+        }
+        @media (max-width: 1024px) {
+          .card-grid-3 {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (max-width: 768px) {
+          .card-grid-3,
+          .card-grid-2 {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+        }
+
+        /* Stats Grid Responsive */
+        .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1.5rem;
+        }
+        @media (max-width: 1024px) {
+          .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (max-width: 480px) {
+          .stats-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        /* Footer Grid Responsive */
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr 1fr;
+          gap: 4rem;
+        }
+        @media (max-width: 1024px) {
+          .footer-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+          }
+        }
+        @media (max-width: 768px) {
+          .footer-grid {
+            grid-template-columns: 1fr;
+            text-align: center;
+          }
+          .footer-grid > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+          .footer-grid a {
+            justify-content: center;
+          }
+          .footer-grid p {
+            margin-left: auto;
+            margin-right: auto;
+          }
+        }
+
+        /* Form Grid Responsive */
+        .form-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.5rem;
+        }
+        @media (max-width: 768px) {
+          .form-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+        }
+
+        /* Flex Responsive */
+        .flex-col-mobile {
+          display: flex;
+          gap: 2rem;
+        }
+        @media (max-width: 768px) {
+          .flex-col-mobile {
+            flex-direction: column;
+            gap: 1rem;
+          }
+        }
+
+        /* Text Alignment Responsive */
+        @media (max-width: 768px) {
+          .text-center-mobile {
+            text-align: center;
+          }
+        }
+
+        /* Image Responsive */
+        .responsive-img {
+          width: 100%;
+          height: auto;
+          max-width: 100%;
+        }
+
+        /* Overflow handling */
+        .overflow-x-auto {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* Product Cards Responsive */
+        .product-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+        }
+        @media (max-width: 1024px) {
+          .product-cards-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (max-width: 768px) {
+          .product-cards-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+        }
+
+        /* FAQ Accordion Responsive */
+        .faq-container {
+          max-width: 800px;
+          margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+          .faq-container {
+            max-width: 100%;
+          }
+        }
+
+        /* Contact Grid Responsive */
+        .contact-grid {
+          display: grid;
+          grid-template-columns: 1fr 1.5fr;
+          gap: 4rem;
+        }
+        @media (max-width: 1024px) {
+          .contact-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+        }
+
+        /* Testimonial Cards */
+        .testimonial-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+        }
+        @media (max-width: 1024px) {
+          .testimonial-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (max-width: 768px) {
+          .testimonial-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        /* Waitlist Section Responsive */
+        .waitlist-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 3rem;
+        }
+        @media (max-width: 1024px) {
+          .waitlist-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+        }
+
+        /* How It Works Steps */
+        .steps-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 2rem;
+        }
+        @media (max-width: 1024px) {
+          .steps-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (max-width: 768px) {
+          .steps-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        /* Features Grid */
+        .features-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2rem;
+        }
+        @media (max-width: 768px) {
+          .features-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+        }
+
+        /* Feature Card - Horizontal layout with image */
+        .feature-card {
+          display: grid;
+          grid-template-columns: 1.2fr 1fr;
+        }
+        @media (max-width: 768px) {
+          .feature-card {
+            grid-template-columns: 1fr;
+          }
+          .feature-card-image {
+            order: -1;
+            height: 200px;
+          }
+        }
+
+        /* SDG Grid */
+        .sdg-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2rem;
+        }
+        @media (max-width: 768px) {
+          .sdg-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        /* Mission Grid */
+        .mission-grid {
+          display: grid;
+          grid-template-columns: 1.2fr 1fr;
+          gap: 3rem;
+        }
+        @media (max-width: 1024px) {
+          .mission-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+        }
+
+        /* Warning Stats Grid */
+        .warning-stats-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.5rem;
+        }
+        @media (max-width: 768px) {
+          .warning-stats-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+        }
+
+        /* All section containers */
+        section {
+          overflow-x: hidden;
+        }
+
+        /* Responsive buttons */
+        .cta-button {
+          padding: 1rem 2rem;
+          font-size: 1rem;
+        }
+        @media (max-width: 768px) {
+          .cta-button {
+            padding: 0.875rem 1.5rem;
+            font-size: 0.875rem;
+            width: 100%;
+          }
+        }
+
+        /* Phone mockup responsive */
+        .phone-mockup-container {
+          max-width: 380px;
+          margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+          .phone-mockup-container {
+            max-width: 280px;
+          }
+        }
+        @media (max-width: 480px) {
+          .phone-mockup-container {
+            max-width: 240px;
+          }
+        }
+
+        /* Image galleries */
+        .gallery-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+        }
+        @media (max-width: 768px) {
+          .gallery-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+        }
+
+        /* Kit comparison grid */
+        .kit-comparison-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+        }
+        @media (max-width: 768px) {
+          .kit-comparison-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+        }
+
+        /* Impact Stats Grid - 4 columns */
+        .impact-stats-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1.5rem;
+          margin-bottom: 4rem;
+        }
+        @media (max-width: 1024px) {
+          .impact-stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .impact-stats-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        /* Impact Image Gallery - 2fr 1fr grid */
+        .impact-gallery-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: 1.5rem;
+        }
+        @media (max-width: 768px) {
+          .impact-gallery-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+        }
+
+        /* Warning Cards Grid - 2 columns */
+        .warning-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.25rem;
+        }
+        @media (max-width: 768px) {
+          .warning-cards-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+        }
+
+        /* How It Works Steps Grid - 4 columns with connection line */
+        .steps-container {
+          position: relative;
+        }
+        .steps-connection-line {
+          position: absolute;
+          top: 50px;
+          left: 12.5%;
+          right: 12.5%;
+          height: 2px;
+          background: linear-gradient(90deg, var(--brand-cyan), var(--brand-orange), var(--brand-success));
+          z-index: 0;
+          box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+        .steps-flow-dot {
+          position: absolute;
+          top: 48px;
+          left: 12.5%;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: var(--brand-cyan);
+          box-shadow: 0 0 15px var(--brand-cyan);
+          z-index: 1;
+        }
+        @media (max-width: 1024px) {
+          .steps-connection-line,
+          .steps-flow-dot {
+            display: none;
+          }
+        }
+
+        /* Products Section Header - flex with navigation */
+        .products-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          margin-bottom: 3rem;
+          gap: 1.5rem;
+        }
+        @media (max-width: 768px) {
+          .products-header {
+            flex-direction: column;
+            align-items: stretch;
+            text-align: center;
+          }
+          .products-header > div:last-child {
+            justify-content: center;
+          }
+        }
+
+        /* Products Grid - 3 columns */
+        .products-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.5rem;
+        }
+        @media (max-width: 1024px) {
+          .products-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+        }
+
+        /* Waitlist Section Grid - Fix for 1fr 1.5fr layout */
+        .waitlist-section-grid {
+          display: grid;
+          grid-template-columns: 1fr 1.5fr;
+          gap: 3rem;
+          align-items: start;
+        }
+        @media (max-width: 1024px) {
+          .waitlist-section-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+        }
+
+        /* Waitlist Form - responsive inputs */
+        .waitlist-form-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.25rem;
+        }
+        @media (max-width: 768px) {
+          .waitlist-form-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+        }
+
+        /* Section containers responsive padding */
+        .section-container {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 0 2rem;
+          position: relative;
+        }
+        @media (max-width: 768px) {
+          .section-container {
+            padding: 0 1rem;
+          }
+        }
+
+        /* Responsive section padding */
+        .section-responsive {
+          padding: 6rem 0;
+        }
+        @media (max-width: 768px) {
+          .section-responsive {
+            padding: 3rem 0;
+          }
+        }
+
+        /* Global responsive padding for sections */
+        @media (max-width: 768px) {
+          section > div[style*="padding: 0 2rem"] {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+          section {
+            padding-top: 3rem !important;
+            padding-bottom: 3rem !important;
+          }
+        }
+
+        /* Hide decorative elements on mobile */
+        @media (max-width: 768px) {
+          .decorative-element,
+          .data-stream,
+          .hud-corner-element {
+            display: none !important;
+          }
+        }
+
+        /* Reduce animations on mobile for performance */
+        @media (max-width: 768px) {
+          .animate-float,
+          .animate-pulse-slow {
+            animation: none;
+          }
+        }
       `}</style>
 
 			<div className="scanlines" />
 
 			<div
 				style={{ minHeight: "100vh", background: "var(--brand-dark)" }}
-				className="tech-grid"
+				className="tech-grid text-balance"
 			>
 				{/* Navigation */}
 				<header
@@ -868,7 +1650,7 @@ export default function Home() {
 						left: 0,
 						right: 0,
 						zIndex: 50,
-						background: "rgba(2, 6, 23, 0.9)",
+						background: "rgba(2, 6, 23, 0.95)",
 						backdropFilter: "blur(20px)",
 						borderBottom: "1px solid rgba(6, 182, 212, 0.1)",
 					}}
@@ -877,20 +1659,21 @@ export default function Home() {
 						style={{
 							maxWidth: "1400px",
 							margin: "0 auto",
-							padding: "0 2rem",
+							padding: "0 1rem",
 							display: "flex",
 							alignItems: "center",
 							justifyContent: "space-between",
-							height: "80px",
+							height: "70px",
 						}}
 					>
+						{/* Logo */}
 						<div
 							style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
 						>
 							<div
 								style={{
-									width: "40px",
-									height: "40px",
+									width: "36px",
+									height: "36px",
 									borderRadius: "8px",
 									background:
 										"linear-gradient(135deg, var(--brand-orange), var(--brand-alert))",
@@ -900,11 +1683,11 @@ export default function Home() {
 									boxShadow: "0 0 20px rgba(249, 115, 22, 0.4)",
 								}}
 							>
-								<span style={{ fontSize: "1.2rem" }}>🛟</span>
+								<span style={{ fontSize: "1.1rem" }}>🛟</span>
 							</div>
 							<span
 								style={{
-									fontSize: "1.5rem",
+									fontSize: "1.25rem",
 									fontWeight: 700,
 									letterSpacing: "0.1em",
 									color: "var(--text-primary)",
@@ -914,27 +1697,29 @@ export default function Home() {
 								NOAH
 							</span>
 							<span
+								className="hide-mobile"
 								style={{
-									fontSize: "0.65rem",
+									fontSize: "0.6rem",
 									color: "var(--brand-cyan)",
 									fontFamily: "monospace",
 									padding: "2px 6px",
 									border: "1px solid var(--brand-cyan)",
 									borderRadius: "2px",
-									marginLeft: "0.25rem",
 								}}
 							>
 								v2.0
 							</span>
 						</div>
 
+						{/* Desktop Navigation */}
 						<div
+							className="desktop-nav"
 							style={{
 								display: "flex",
 								alignItems: "center",
 								gap: "0.25rem",
 								background: "rgba(15, 23, 42, 0.6)",
-								padding: "0.4rem",
+								padding: "0.35rem",
 								border: "1px solid rgba(6, 182, 212, 0.2)",
 								borderRadius: "4px",
 							}}
@@ -944,14 +1729,14 @@ export default function Home() {
 								{ label: t.nav.products, href: "#products" },
 								{ label: t.nav.about, href: "#about" },
 								{ label: t.nav.contact, href: "#contact" },
-							].map((item, i) => (
+							].map((item) => (
 								<a
-									key={i}
+									key={`nav-${item.href}`}
 									href={item.href}
 									style={{
-										padding: "0.6rem 1.25rem",
+										padding: "0.5rem 1rem",
 										borderRadius: "2px",
-										fontSize: "0.8rem",
+										fontSize: "0.75rem",
 										fontWeight: 500,
 										textDecoration: "none",
 										transition: "all 0.3s ease",
@@ -971,10 +1756,14 @@ export default function Home() {
 							))}
 						</div>
 
-						<div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+						{/* Desktop Right Actions */}
+						<div
+							className="desktop-nav"
+							style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+						>
 							<div
 								style={{
-									fontSize: "0.7rem",
+									fontSize: "0.65rem",
 									color: "var(--brand-cyan)",
 									fontFamily: "monospace",
 									display: "flex",
@@ -983,7 +1772,7 @@ export default function Home() {
 								}}
 							>
 								<span className="status-dot status-active" />
-								<span>{t.hud.sysActive}</span>
+								<span className="hide-tablet">{t.hud.sysActive}</span>
 							</div>
 							<button
 								type="button"
@@ -994,12 +1783,12 @@ export default function Home() {
 									display: "flex",
 									alignItems: "center",
 									gap: "0.5rem",
-									padding: "0.5rem 0.75rem",
+									padding: "0.4rem 0.6rem",
 									borderRadius: "4px",
 									border: "1px solid rgba(6, 182, 212, 0.3)",
 									background: "transparent",
 									cursor: "pointer",
-									fontSize: "0.8rem",
+									fontSize: "0.75rem",
 									fontWeight: 500,
 									color: "var(--brand-cyan)",
 									transition: "all 0.3s ease",
@@ -1014,11 +1803,11 @@ export default function Home() {
 									display: "flex",
 									alignItems: "center",
 									gap: "0.5rem",
-									padding: "0.6rem 1.25rem",
+									padding: "0.5rem 1rem",
 									borderRadius: "4px",
 									background: "var(--brand-orange)",
 									color: "white",
-									fontSize: "0.85rem",
+									fontSize: "0.75rem",
 									fontWeight: 600,
 									textDecoration: "none",
 									transition: "all 0.3s ease",
@@ -1029,32 +1818,171 @@ export default function Home() {
 							>
 								{t.hero.cta}
 								<svg
-									width="14"
-									height="14"
+									width="12"
+									height="12"
 									viewBox="0 0 24 24"
 									fill="none"
 									stroke="currentColor"
 									strokeWidth="2"
+									aria-hidden="true"
 								>
+									<title>Arrow</title>
 									<path d="M5 12h14M12 5l7 7-7 7" />
 								</svg>
 							</a>
 						</div>
+
+						{/* Mobile Menu Button */}
+						<div
+							style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+							className="mobile-only"
+						>
+							<button
+								type="button"
+								onClick={() =>
+									setLanguage((prev) => (prev === "vi" ? "en" : "vi"))
+								}
+								style={{
+									padding: "0.4rem 0.6rem",
+									borderRadius: "4px",
+									border: "1px solid rgba(6, 182, 212, 0.3)",
+									background: "transparent",
+									cursor: "pointer",
+									fontSize: "0.75rem",
+									fontWeight: 500,
+									color: "var(--brand-cyan)",
+									fontFamily: "monospace",
+								}}
+							>
+								{language === "vi" ? "VI" : "EN"}
+							</button>
+							<button
+								type="button"
+								onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+								className="mobile-menu-btn"
+								aria-label="Toggle menu"
+								style={{
+									display: "flex",
+									flexDirection: "column",
+									gap: "5px",
+									padding: "8px",
+									background: "transparent",
+									border: "1px solid var(--brand-cyan)",
+									borderRadius: "6px",
+									cursor: "pointer",
+								}}
+							>
+								<span
+									style={{
+										width: "20px",
+										height: "2px",
+										background: "var(--brand-cyan)",
+										transform: mobileMenuOpen
+											? "rotate(45deg) translateY(7px)"
+											: "none",
+										transition: "all 0.3s ease",
+									}}
+								/>
+								<span
+									style={{
+										width: "20px",
+										height: "2px",
+										background: "var(--brand-cyan)",
+										opacity: mobileMenuOpen ? 0 : 1,
+										transition: "all 0.3s ease",
+									}}
+								/>
+								<span
+									style={{
+										width: "20px",
+										height: "2px",
+										background: "var(--brand-cyan)",
+										transform: mobileMenuOpen
+											? "rotate(-45deg) translateY(-7px)"
+											: "none",
+										transition: "all 0.3s ease",
+									}}
+								/>
+							</button>
+						</div>
 					</nav>
+
+					{/* Mobile Navigation Menu */}
+					{mobileMenuOpen && (
+						<div
+							className="mobile-nav"
+							style={{
+								position: "absolute",
+								top: "70px",
+								left: 0,
+								right: 0,
+								background: "rgba(2, 6, 23, 0.98)",
+								backdropFilter: "blur(20px)",
+								borderBottom: "1px solid var(--brand-cyan)",
+								padding: "1rem",
+								display: "flex",
+								flexDirection: "column",
+								gap: "0.5rem",
+							}}
+						>
+							{[
+								{ label: t.nav.home, href: "#", active: true },
+								{ label: t.nav.products, href: "#products" },
+								{ label: t.nav.about, href: "#about" },
+								{ label: t.nav.contact, href: "#contact" },
+							].map((item) => (
+								<a
+									key={`mobile-nav-${item.href}`}
+									href={item.href}
+									onClick={() => setMobileMenuOpen(false)}
+									style={{
+										padding: "1rem",
+										borderRadius: "8px",
+										fontSize: "1rem",
+										fontWeight: 500,
+										textDecoration: "none",
+										textAlign: "center",
+										textTransform: "uppercase",
+										letterSpacing: "0.05em",
+										background: item.active
+											? "rgba(249, 115, 22, 0.2)"
+											: "rgba(15, 23, 42, 0.6)",
+										color: item.active
+											? "var(--brand-orange)"
+											: "var(--text-secondary)",
+										border: item.active
+											? "1px solid var(--brand-orange)"
+											: "1px solid rgba(6, 182, 212, 0.1)",
+									}}
+								>
+									{item.label}
+								</a>
+							))}
+							<a
+								href="#waitlist"
+								onClick={() => setMobileMenuOpen(false)}
+								style={{
+									padding: "1rem",
+									borderRadius: "8px",
+									background: "var(--brand-orange)",
+									color: "white",
+									fontSize: "1rem",
+									fontWeight: 600,
+									textDecoration: "none",
+									textAlign: "center",
+									textTransform: "uppercase",
+									letterSpacing: "0.05em",
+									marginTop: "0.5rem",
+								}}
+							>
+								{t.hero.cta}
+							</a>
+						</div>
+					)}
 				</header>
 
 				{/* Hero Section */}
-				<section
-					style={{
-						minHeight: "100vh",
-						display: "flex",
-						alignItems: "center",
-						paddingTop: "100px",
-						paddingBottom: "4rem",
-						position: "relative",
-						overflow: "hidden",
-					}}
-				>
+				<section className="hero-section">
 					{/* Tech Grid Background */}
 					<div
 						className="tech-grid"
@@ -1079,37 +2007,36 @@ export default function Home() {
 							pointerEvents: "none",
 						}}
 					/>
-					{/* Radial gradient background */}
+					{/* Radial gradient background - Hidden on mobile */}
 					<div
+						className="hero-glow-orb"
 						style={{
-							position: "absolute",
 							top: "30%",
 							left: "20%",
 							width: "600px",
 							height: "600px",
-							borderRadius: "50%",
 							background:
 								"radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 60%)",
 							filter: "blur(60px)",
 						}}
 					/>
-					{/* Orange accent glow */}
+					{/* Orange accent glow - Hidden on mobile */}
 					<div
+						className="hero-glow-orb"
 						style={{
-							position: "absolute",
 							top: "40%",
 							right: "20%",
 							width: "500px",
 							height: "500px",
-							borderRadius: "50%",
 							background:
 								"radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 60%)",
 							filter: "blur(80px)",
 						}}
 					/>
 
-					{/* Left Data Stream */}
+					{/* Left Data Stream - Hidden on mobile */}
 					<div
+						className="hide-mobile"
 						style={{
 							position: "absolute",
 							left: "20px",
@@ -1132,8 +2059,9 @@ export default function Home() {
 						/>
 					</div>
 
-					{/* Right Data Stream */}
+					{/* Right Data Stream - Hidden on mobile */}
 					<div
+						className="hide-mobile"
 						style={{
 							position: "absolute",
 							right: "20px",
@@ -1157,8 +2085,9 @@ export default function Home() {
 						/>
 					</div>
 
-					{/* Corner HUD Elements */}
+					{/* Corner HUD Elements - Hidden on mobile */}
 					<div
+						className="hide-mobile"
 						style={{
 							position: "absolute",
 							top: "100px",
@@ -1174,6 +2103,7 @@ export default function Home() {
 						<div>{t.hud.statusReady}</div>
 					</div>
 					<div
+						className="hide-mobile"
 						style={{
 							position: "absolute",
 							top: "100px",
@@ -1190,6 +2120,7 @@ export default function Home() {
 						<div>{t.hud.power}</div>
 					</div>
 					<div
+						className="hide-mobile"
 						style={{
 							position: "absolute",
 							bottom: "30px",
@@ -1204,7 +2135,7 @@ export default function Home() {
 						<div>{t.hud.altHdop}</div>
 					</div>
 					<div
-						className="animate-hud-flicker"
+						className="hide-mobile animate-hud-flicker"
 						style={{
 							position: "absolute",
 							bottom: "30px",
@@ -1222,26 +2153,24 @@ export default function Home() {
 					</div>
 
 					<div
+						className="hero-grid"
 						style={{
 							maxWidth: "1400px",
 							margin: "0 auto",
-							padding: "0 2rem",
+							padding: "2rem",
 							width: "100%",
-							display: "grid",
-							gridTemplateColumns: "1.1fr 0.9fr",
-							gap: "2rem",
-							alignItems: "center",
 							position: "relative",
 							zIndex: 1,
 						}}
 					>
 						{/* Left Content */}
 						<div
-							className={mounted ? "animate-fade-in-up" : ""}
+							className={`hero-content ${mounted ? "animate-fade-in-up" : ""}`}
 							style={{ opacity: mounted ? 1 : 0 }}
 						>
 							{/* System Status Bar */}
 							<div
+								className="system-status-bar"
 								style={{
 									display: "flex",
 									alignItems: "center",
@@ -1401,9 +2330,7 @@ export default function Home() {
 							</div>
 
 							{/* Stats Row */}
-							<div
-								style={{ display: "flex", gap: "1.5rem", marginBottom: "2rem" }}
-							>
+							<div className="hero-stats-row">
 								<div
 									style={{
 										position: "relative",
@@ -1540,15 +2467,13 @@ export default function Home() {
 
 							{/* Coordinate label */}
 							<div
+								className="hero-coord-label"
 								style={{
 									marginTop: "2.5rem",
 									fontFamily: "monospace",
 									fontSize: "0.7rem",
 									color: "var(--brand-cyan)",
 									opacity: 0.5,
-									display: "flex",
-									alignItems: "center",
-									gap: "1rem",
 								}}
 							>
 								<span>{t.hud.coordBracket}</span>
@@ -1556,18 +2481,76 @@ export default function Home() {
 									{t.hud.systemOnline}
 								</span>
 							</div>
+
+							{/* Feature Badges - Mobile Only */}
+							<div className="feature-badges-mobile">
+								<div
+									className="feature-badge-item"
+									style={{ borderLeft: "3px solid var(--brand-success)" }}
+								>
+									<div
+										className="feature-badge-icon"
+										style={{
+											background:
+												"linear-gradient(135deg, var(--brand-success), var(--brand-success)88)",
+										}}
+									>
+										📍
+									</div>
+									<div className="feature-badge-text">
+										<h4>{t.badges.gps}</h4>
+										<p>{t.badges.gpsDesc}</p>
+									</div>
+								</div>
+								<div
+									className="feature-badge-item"
+									style={{ borderLeft: "3px solid var(--brand-cyan)" }}
+								>
+									<div
+										className="feature-badge-icon"
+										style={{
+											background:
+												"linear-gradient(135deg, var(--brand-cyan), var(--brand-cyan)88)",
+										}}
+									>
+										💧
+									</div>
+									<div className="feature-badge-text">
+										<h4>{t.badges.water}</h4>
+										<p>{t.badges.waterDesc}</p>
+									</div>
+								</div>
+								<div
+									className="feature-badge-item"
+									style={{ borderLeft: "3px solid var(--brand-alert)" }}
+								>
+									<div
+										className="feature-badge-icon"
+										style={{
+											background:
+												"linear-gradient(135deg, var(--brand-alert), var(--brand-alert)88)",
+										}}
+									>
+										🆘
+									</div>
+									<div className="feature-badge-text">
+										<h4>{t.badges.sos}</h4>
+										<p>{t.badges.sosDesc}</p>
+									</div>
+								</div>
+							</div>
 						</div>
 
 						{/* Right Content - TechMap Radar Phone Mockup */}
 						<div
-							className={mounted ? "animate-slide-in-right" : ""}
+							className={`hero-phone-mockup ${mounted ? "animate-slide-in-right" : ""}`}
 							style={{
 								position: "relative",
 								opacity: mounted ? 1 : 0,
 								display: "flex",
 								alignItems: "center",
 								justifyContent: "center",
-								padding: "2rem",
+								padding: "1rem",
 							}}
 						>
 							{/* Outer HUD Frame */}
@@ -1990,8 +2973,9 @@ export default function Home() {
 									</div>
 								</div>
 
-								{/* Feature Badges - Repositioned */}
+								{/* Feature Badges - Repositioned (Hidden on mobile) */}
 								<div
+									className="hide-mobile"
 									style={{
 										position: "absolute",
 										top: "8%",
@@ -2042,6 +3026,7 @@ export default function Home() {
 								</div>
 
 								<div
+									className="hide-mobile"
 									style={{
 										position: "absolute",
 										top: "40%",
@@ -2092,6 +3077,7 @@ export default function Home() {
 								</div>
 
 								<div
+									className="hide-mobile"
 									style={{
 										position: "absolute",
 										bottom: "15%",
@@ -2266,14 +3252,7 @@ export default function Home() {
 						</div>
 
 						{/* Stats Grid */}
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "repeat(4, 1fr)",
-								gap: "1.5rem",
-								marginBottom: "4rem",
-							}}
-						>
+						<div className="impact-stats-grid">
 							{[
 								{
 									ref: counter1.ref,
@@ -2363,13 +3342,7 @@ export default function Home() {
 						</div>
 
 						{/* Image Gallery with HUD Overlays */}
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "2fr 1fr",
-								gap: "1.5rem",
-							}}
-						>
+						<div className="impact-gallery-grid">
 							<div
 								style={{
 									borderRadius: "8px",
@@ -2634,13 +3607,7 @@ export default function Home() {
 							</h2>
 						</div>
 
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "repeat(2, 1fr)",
-								gap: "1.25rem",
-							}}
-						>
+						<div className="warning-cards-grid">
 							{[
 								{ ...t.warning.note1, color: "var(--brand-alert)", num: "01" },
 								{ ...t.warning.note2, color: "var(--brand-orange)", num: "02" },
@@ -2768,43 +3735,11 @@ export default function Home() {
 							</p>
 						</div>
 
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "repeat(4, 1fr)",
-								gap: "1.5rem",
-								position: "relative",
-							}}
-						>
-							{/* Animated Connection Line */}
-							<div
-								style={{
-									position: "absolute",
-									top: "50px",
-									left: "12.5%",
-									right: "12.5%",
-									height: "2px",
-									background:
-										"linear-gradient(90deg, var(--brand-cyan), var(--brand-orange), var(--brand-success))",
-									zIndex: 0,
-									boxShadow: "0 0 10px rgba(6, 182, 212, 0.5)",
-								}}
-							/>
-							{/* Data Flow Animation */}
-							<div
-								className="animate-pulse-slow"
-								style={{
-									position: "absolute",
-									top: "48px",
-									left: "12.5%",
-									width: "8px",
-									height: "8px",
-									borderRadius: "50%",
-									background: "var(--brand-cyan)",
-									boxShadow: "0 0 15px var(--brand-cyan)",
-									zIndex: 1,
-								}}
-							/>
+						<div className="steps-grid steps-container">
+							{/* Animated Connection Line - Hidden on tablet/mobile via CSS */}
+							<div className="steps-connection-line" />
+							{/* Data Flow Animation - Hidden on tablet/mobile via CSS */}
+							<div className="steps-flow-dot animate-pulse-slow" />
 
 							{[
 								{
@@ -2900,259 +3835,11 @@ export default function Home() {
 					</div>
 				</section>
 
-				{/* Products Section */}
+				{/* What's Included Section */}
 				<section
 					id="products"
-					style={{
-						padding: "6rem 0",
-						background: "var(--brand-surface)",
-						position: "relative",
-					}}
+					style={{ padding: "4rem 0", background: "var(--brand-dark)" }}
 				>
-					<div
-						className="tech-grid"
-						style={{ position: "absolute", inset: 0, opacity: 0.3 }}
-					/>
-
-					<div
-						style={{
-							maxWidth: "1400px",
-							margin: "0 auto",
-							padding: "0 2rem",
-							position: "relative",
-						}}
-					>
-						<div
-							style={{
-								display: "flex",
-								justifyContent: "space-between",
-								alignItems: "flex-end",
-								marginBottom: "3rem",
-							}}
-						>
-							<div>
-								<h2
-									style={{
-										fontSize: "clamp(2rem, 5vw, 3rem)",
-										fontWeight: 700,
-										marginBottom: "0.5rem",
-										color: "var(--text-primary)",
-										letterSpacing: "0.05em",
-									}}
-								>
-									{t.products.title}
-								</h2>
-								<p style={{ color: "var(--text-secondary)", fontSize: "1rem" }}>
-									{t.products.subtitle}
-								</p>
-							</div>
-							<div
-								style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}
-							>
-								<span
-									style={{
-										fontSize: "1.25rem",
-										fontWeight: 500,
-									}}
-								>
-									<span style={{ color: "var(--brand-orange)" }}>
-										{activeProduct + 1}
-									</span>
-									<span style={{ color: "var(--text-muted)" }}>/3</span>
-								</span>
-								<div style={{ display: "flex", gap: "0.5rem" }}>
-									{[
-										{ dir: -1, icon: "M19 12H5M12 19l-7-7 7-7" },
-										{ dir: 1, icon: "M5 12h14M12 5l7 7-7 7" },
-									].map((btn, i) => (
-										<button
-											key={i}
-											type="button"
-											onClick={() =>
-												setActiveProduct((prev) => (prev + btn.dir + 3) % 3)
-											}
-											style={{
-												width: "40px",
-												height: "40px",
-												borderRadius: "4px",
-												border: "1px solid rgba(6, 182, 212, 0.3)",
-												background: "rgba(6, 182, 212, 0.1)",
-												cursor: "pointer",
-												display: "flex",
-												alignItems: "center",
-												justifyContent: "center",
-												color: "var(--brand-cyan)",
-												transition: "all 0.3s ease",
-											}}
-										>
-											<svg
-												width="16"
-												height="16"
-												viewBox="0 0 24 24"
-												fill="none"
-												stroke="currentColor"
-												strokeWidth="2"
-											>
-												<path d={btn.icon} />
-											</svg>
-										</button>
-									))}
-								</div>
-							</div>
-						</div>
-
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "repeat(3, 1fr)",
-								gap: "1.5rem",
-							}}
-						>
-							{products.map((product, i) => (
-								<div
-									key={product.id}
-									onClick={() => setActiveProduct(i)}
-									onKeyDown={(e) => e.key === "Enter" && setActiveProduct(i)}
-									role="button"
-									tabIndex={0}
-									className="glass-panel"
-									style={{
-										position: "relative",
-										borderRadius: "8px",
-										overflow: "hidden",
-										cursor: "pointer",
-										transition: "all 0.4s ease",
-										transform: activeProduct === i ? "scale(1)" : "scale(0.95)",
-										opacity: activeProduct === i ? 1 : 0.6,
-										boxShadow:
-											activeProduct === i
-												? "0 0 40px rgba(249, 115, 22, 0.3)"
-												: "0 10px 30px rgba(0,0,0,0.2)",
-										borderColor:
-											activeProduct === i
-												? "var(--brand-orange)"
-												: "rgba(6, 182, 212, 0.2)",
-									}}
-								>
-									<div
-										style={{
-											height: "250px",
-											background: "var(--brand-dark)",
-											display: "flex",
-											alignItems: "center",
-											justifyContent: "center",
-											position: "relative",
-										}}
-									>
-										<img
-											src={product.image}
-											alt={product.name}
-											style={{
-												maxWidth: "90%",
-												maxHeight: "90%",
-												objectFit: "cover",
-												borderRadius: "8px",
-												filter: activeProduct === i ? "none" : "grayscale(50%)",
-												transition: "filter 0.3s ease",
-											}}
-										/>
-										{/* HUD Overlay */}
-										<div
-											style={{
-												position: "absolute",
-												top: "8px",
-												left: "8px",
-												width: "16px",
-												height: "16px",
-												borderTop: "2px solid var(--brand-cyan)",
-												borderLeft: "2px solid var(--brand-cyan)",
-											}}
-										/>
-										<div
-											style={{
-												position: "absolute",
-												top: "8px",
-												right: "8px",
-												width: "16px",
-												height: "16px",
-												borderTop: "2px solid var(--brand-cyan)",
-												borderRight: "2px solid var(--brand-cyan)",
-											}}
-										/>
-										{product.tag && (
-											<span
-												style={{
-													position: "absolute",
-													top: "1rem",
-													right: "1rem",
-													padding: "0.35rem 0.7rem",
-													background:
-														i === 1
-															? "var(--brand-orange)"
-															: "var(--brand-success)",
-													color: "white",
-													fontSize: "0.65rem",
-													fontWeight: 600,
-													borderRadius: "2px",
-													textTransform: "uppercase",
-													letterSpacing: "0.05em",
-													boxShadow: `0 0 15px ${i === 1 ? "rgba(249, 115, 22, 0.5)" : "rgba(16, 185, 129, 0.5)"}`,
-												}}
-											>
-												{product.tag}
-											</span>
-										)}
-									</div>
-									<div
-										style={{
-											padding: "1.25rem",
-											background: "var(--brand-surface-light)",
-										}}
-									>
-										<div
-											style={{
-												display: "flex",
-												justifyContent: "space-between",
-												alignItems: "center",
-												marginBottom: "0.5rem",
-											}}
-										>
-											<h3
-												style={{
-													fontSize: "1.25rem",
-													fontWeight: 600,
-													color: "var(--text-primary)",
-												}}
-											>
-												{product.name}
-											</h3>
-											<span
-												style={{
-													fontSize: "1rem",
-													fontWeight: 700,
-													color: "var(--brand-orange)",
-												}}
-											>
-												{product.price}
-											</span>
-										</div>
-										<p
-											style={{
-												fontSize: "0.85rem",
-												color: "var(--text-muted)",
-											}}
-										>
-											{product.desc}
-										</p>
-									</div>
-								</div>
-							))}
-						</div>
-					</div>
-				</section>
-
-				{/* What's Included Section */}
-				<section style={{ padding: "4rem 0", background: "var(--brand-dark)" }}>
 					<div
 						style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 2rem" }}
 					>
@@ -3181,13 +3868,7 @@ export default function Home() {
 								: "All essential items in one complete kit"}
 						</p>
 
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "1fr 1fr",
-								gap: "2rem",
-							}}
-						>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
 							{/* Base Package */}
 							<div
 								className="glass-panel"
@@ -3349,22 +4030,28 @@ export default function Home() {
 									{[
 										{
 											feature: t.comparison.waterFilter,
-											detail: language === "vi" ? "LifeStraw" : "LifeStraw Filter",
+											detail:
+												language === "vi" ? "LifeStraw" : "LifeStraw Filter",
 											icon: "💧",
 										},
 										{
 											feature: t.comparison.flashlight,
-											detail: language === "vi" ? "Đèn LED cao cấp" : "Premium LED",
+											detail:
+												language === "vi" ? "Đèn LED cao cấp" : "Premium LED",
 											icon: "🔦",
 										},
 										{
 											feature: t.comparison.food,
-											detail: language === "vi" ? "Nâng lên 1kg" : "Upgrade to 1kg",
+											detail:
+												language === "vi" ? "Nâng lên 1kg" : "Upgrade to 1kg",
 											icon: "📦",
 										},
 										{
 											feature: t.comparison.lifeJacket,
-											detail: language === "vi" ? "Nâng cấp cao cấp" : "Premium upgrade",
+											detail:
+												language === "vi"
+													? "Nâng cấp cao cấp"
+													: "Premium upgrade",
 											icon: "⭐",
 										},
 									].map((item, i) => (
@@ -3434,7 +4121,9 @@ export default function Home() {
 											marginBottom: "0.25rem",
 										}}
 									>
-										{language === "vi" ? "Tùy chỉnh theo nhu cầu" : "Customize to your needs"}
+										{language === "vi"
+											? "Tùy chỉnh theo nhu cầu"
+											: "Customize to your needs"}
 									</div>
 									<div
 										style={{
@@ -3443,7 +4132,9 @@ export default function Home() {
 											color: "var(--brand-orange)",
 										}}
 									>
-										{language === "vi" ? "Liên hệ để báo giá" : "Contact for pricing"}
+										{language === "vi"
+											? "Liên hệ để báo giá"
+											: "Contact for pricing"}
 									</div>
 								</div>
 							</div>
@@ -3463,7 +4154,8 @@ export default function Home() {
 									fontSize: "1rem",
 									fontWeight: 600,
 									color: "#ffffff",
-									background: "linear-gradient(135deg, var(--brand-orange) 0%, #f97316 100%)",
+									background:
+										"linear-gradient(135deg, var(--brand-orange) 0%, #f97316 100%)",
 									border: "none",
 									borderRadius: "50px",
 									cursor: "pointer",
@@ -3512,13 +4204,7 @@ export default function Home() {
 							{t.features.title}
 						</h2>
 
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "repeat(2, 1fr)",
-								gap: "1.5rem",
-							}}
-						>
+						<div className="features-grid">
 							{[
 								{
 									icon: "📍",
@@ -3547,12 +4233,10 @@ export default function Home() {
 							].map((feature, i) => (
 								<div
 									key={i}
-									className="glass-panel hover-lift"
+									className="glass-panel hover-lift feature-card"
 									style={{
 										borderRadius: "8px",
 										overflow: "hidden",
-										display: "grid",
-										gridTemplateColumns: "1.2fr 1fr",
 									}}
 								>
 									<div style={{ padding: "1.5rem" }}>
@@ -3619,6 +4303,7 @@ export default function Home() {
 										</div>
 									</div>
 									<div
+										className="feature-card-image"
 										style={{
 											background: "var(--brand-dark)",
 											display: "flex",
@@ -3906,14 +4591,7 @@ export default function Home() {
 							</h2>
 						</div>
 
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "1fr 1fr",
-								gap: "4rem",
-								alignItems: "start",
-							}}
-						>
+						<div className="mission-grid">
 							{/* Left: Story + Mission Quote */}
 							<div>
 								<p
@@ -4191,13 +4869,7 @@ export default function Home() {
 							</h2>
 						</div>
 
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "repeat(2, 1fr)",
-								gap: "2rem",
-							}}
-						>
+						<div className="sdg-grid">
 							{[
 								{
 									num: t.sdg.sdg11,
@@ -4461,6 +5133,8 @@ export default function Home() {
 											style={{
 												width: "28px",
 												height: "28px",
+												minWidth: "28px",
+												flexShrink: 0,
 												background:
 													openFaq === i
 														? "var(--brand-orange)"
@@ -4561,14 +5235,7 @@ export default function Home() {
 							position: "relative",
 						}}
 					>
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "1fr 1.5fr",
-								gap: "3rem",
-								alignItems: "start",
-							}}
-						>
+						<div className="waitlist-section-grid">
 							{/* Left Info Cards */}
 							<div>
 								{/* Development Status Card */}
@@ -5014,13 +5681,7 @@ export default function Home() {
 							</h2>
 						</div>
 
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "repeat(4, 1fr)",
-								gap: "1.5rem",
-							}}
-						>
+						<div className="stats-grid">
 							{[
 								{
 									icon: "📞",
@@ -5180,10 +5841,8 @@ export default function Home() {
 						}}
 					>
 						<div
+							className="footer-grid"
 							style={{
-								display: "grid",
-								gridTemplateColumns: "2fr 1fr 1fr",
-								gap: "4rem",
 								marginBottom: "3rem",
 							}}
 						>
