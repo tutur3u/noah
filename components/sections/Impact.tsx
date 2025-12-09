@@ -6,16 +6,16 @@ import { useCounter } from "../hooks/useCounter";
 export function Impact() {
 	const { t } = useLanguage();
 
-	const counter1 = useCounter(1.5, 2000);
-	const counter2 = useCounter(150, 2000);
-	const counter3 = useCounter(63, 2000);
-	const counter4 = useCounter(2024, 2000);
+	const counter1 = useCounter(14300, 2000);
+	const counter2 = useCounter(108, 2000);
+	const counter3 = useCounter(5, 2000);
+	const counter4 = useCounter(2025, 2000);
 
 	const stats = [
 		{
 			ref: counter1.ref,
 			count: counter1.count,
-			suffix: "T USD",
+			suffix: "T VND",
 			label: t.impact.stat1,
 			icon: "💰",
 			color: "var(--brand-orange)",
@@ -23,7 +23,7 @@ export function Impact() {
 		{
 			ref: counter2.ref,
 			count: counter2.count,
-			suffix: "M+",
+			suffix: "",
 			label: t.impact.stat2,
 			icon: "👥",
 			color: "var(--brand-alert)",
@@ -132,7 +132,7 @@ export function Impact() {
 					</p>
 				</div>
 
-				{/* Stats Grid */}
+				{/* Stats Grid - Two rows */}
 				<div className="impact-stats-grid">
 					{stats.map((stat) => (
 						<div
@@ -149,15 +149,15 @@ export function Impact() {
 						>
 							<div
 								style={{
-									width: "50px",
-									height: "50px",
+									width: "40px",
+									height: "40px",
 									borderRadius: "8px",
 									background: `linear-gradient(135deg, ${stat.color}20, ${stat.color}10)`,
 									display: "flex",
 									alignItems: "center",
 									justifyContent: "center",
-									fontSize: "1.5rem",
-									margin: "0 auto 1rem",
+									fontSize: "1.25rem",
+									margin: "0 auto 0.75rem",
 									border: `1px solid ${stat.color}30`,
 								}}
 							>
@@ -165,7 +165,7 @@ export function Impact() {
 							</div>
 							<div
 								style={{
-									fontSize: "2.5rem",
+									fontSize: "2.25rem",
 									fontWeight: 700,
 									color: stat.color,
 									textShadow: `0 0 30px ${stat.color}50`,
@@ -176,9 +176,9 @@ export function Impact() {
 							</div>
 							<div
 								style={{
-									fontSize: "0.8rem",
+									fontSize: "0.7rem",
 									color: "var(--text-muted)",
-									marginTop: "0.5rem",
+									marginTop: "0.35rem",
 									textTransform: "uppercase",
 									letterSpacing: "0.05em",
 								}}

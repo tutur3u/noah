@@ -15,7 +15,7 @@ export const translations = {
 			subtitle:
 				"Mỗi năm, hàng trăm người Việt Nam mất mạng vì lũ lụt. Đừng để gia đình bạn trở thành con số thống kê tiếp theo.",
 			description:
-				"Kit cứu hộ NOAH được thiết kế từ nỗi đau của những mất mát. Mỗi tính năng đều được nghiên cứu từ thực tế lũ lụt tại Việt Nam.",
+				"Chúng tôi đang phát triển bộ kit sinh tồn thế kỷ 21 — nhẹ, đa năng, sẵn sàng cho cộng đồng, và được thiết kế để giúp người dùng an toàn, dễ nhìn thấy, và sống sót trong lũ lụt nghiêm trọng.",
 			cta: "Tìm hiểu ngay",
 			stats: {
 				disasters: "thiên tai từ bão lũ",
@@ -35,11 +35,19 @@ export const translations = {
 			badge: "Sự thật đau lòng",
 			title: "Thảm họa không chờ đợi",
 			subtitle:
-				"Những con số này không chỉ là thống kê — đó là sinh mạng, là gia đình, là những giấc mơ bị cuốn trôi",
+				"70% người dân Việt Nam sinh cơ lập nghiệp ở những vùng đất ven biển và đồng bằng trũng thấp, nơi bão lũ triền miên. Những con số này không chỉ là thống kê — đó là sinh mạng, là gia đình, là những giấc mơ bị cuốn trôi",
 			stat1: "Thiệt hại mỗi năm",
+			stat1Desc: "Thiệt hại tính đến tháng 11/2025",
 			stat2: "Người bị ảnh hưởng",
+			stat2Desc: "98 người chết, 10 người mất tích",
 			stat3: "Tỉnh thành có nguy cơ",
+			stat3Desc: "tỉnh thành thiệt hại nặng nề (sau sát nhập)",
 			stat4: "Tháng mùa lũ",
+			stat4Desc: "Tính đến tháng 11/2025",
+			topLabel1: "14.300 nghìn tỉ VND",
+			topLabel2: "108 người",
+			topLabel3: "5",
+			topLabel4: "2025",
 			caption1: "Khi nước dâng, mọi thứ có thể mất chỉ trong vài giờ",
 			caption2:
 				"Nhiều gia đình bị cô lập hoàn toàn, không thức ăn, không nước sạch",
@@ -273,7 +281,7 @@ export const translations = {
 			subtitle:
 				"Every year, hundreds of Vietnamese lose their lives to floods. Don't let your family become the next statistic.",
 			description:
-				"The NOAH rescue kit was designed from the pain of loss. Every feature is researched from real flood situations in Vietnam.",
+				"We are developing a 21st-century survival kit — lightweight, multi-functional, community-ready, and designed to help users stay safe, visible, and alive during severe flooding.",
 			cta: "Learn More",
 			stats: {
 				disasters: "disasters from floods",
@@ -293,11 +301,19 @@ export const translations = {
 			badge: "Painful Truths",
 			title: "Disaster Waits For No One",
 			subtitle:
-				"These numbers aren't just statistics — they are lives, families, and dreams swept away",
+				"70% of Vietnamese people live in coastal areas and low-lying plains, where floods and storms are constant. These numbers aren't just statistics — they are lives, families, and dreams swept away",
 			stat1: "Damage per year",
+			stat1Desc: "Damage as of Nov 2025",
 			stat2: "People affected",
+			stat2Desc: "98 deaths, 10 missing",
 			stat3: "Provinces at risk",
+			stat3Desc: "provinces severely damaged (post-merger)",
 			stat4: "Flood months",
+			stat4Desc: "As of Nov 2025",
+			topLabel1: "14,300 trillion VND",
+			topLabel2: "108 people",
+			topLabel3: "5",
+			topLabel4: "2025",
 			caption1: "When water rises, everything can be lost in just hours",
 			caption2:
 				"Many families are completely isolated, without food, without clean water",

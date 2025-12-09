@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
 
 export function Hero() {
@@ -200,7 +200,7 @@ export function Hero() {
 				>
 					{/* System Status Bar */}
 					<div
-						className="system-status-bar"
+						className="system-status-bar hero-status-bar flex flex-col md:flex-row"
 						style={{
 							display: "flex",
 							alignItems: "center",
@@ -208,13 +208,13 @@ export function Hero() {
 							marginBottom: "1.5rem",
 						}}
 					>
-						{/* HUD Badge */}
+						{/* HUD Badge - Bigger */}
 						<div
 							style={{
 								display: "inline-flex",
 								alignItems: "center",
-								gap: "0.5rem",
-								padding: "0.5rem 1rem",
+								gap: "0.75rem",
+								padding: "0.75rem 1.5rem",
 								background: "rgba(15, 23, 42, 0.9)",
 								border: "1px solid rgba(249, 115, 22, 0.4)",
 								boxShadow:
@@ -224,28 +224,32 @@ export function Hero() {
 							<span
 								className="status-dot status-alert"
 								style={{
+									width: "10px",
+									height: "10px",
 									animation: "pulse-slow 1.5s ease-in-out infinite",
 								}}
 							/>
 							<span
 								style={{
-									fontSize: "0.75rem",
+									fontSize: "0.9rem",
 									color: "var(--brand-orange)",
 									textTransform: "uppercase",
 									letterSpacing: "0.15em",
 									fontFamily: "monospace",
+									fontWeight: 600,
 								}}
 							>
 								{t.hero.tagline}
 							</span>
 						</div>
-						{/* Time display */}
+						{/* Time display - Bigger */}
 						<div
 							style={{
 								fontFamily: "monospace",
-								fontSize: "0.65rem",
+								fontSize: "0.85rem",
 								color: "var(--brand-cyan)",
-								opacity: 0.7,
+								opacity: 0.8,
+								fontWeight: 500,
 							}}
 						>
 							[{new Date().toLocaleTimeString("en-US", { hour12: false })}]
@@ -570,624 +574,435 @@ export function Hero() {
 					</div>
 				</div>
 
-				{/* Right Content - TechMap Radar Phone Mockup */}
+				{/* Right Content - Life Vest + Compact Phone Mockup */}
 				<div
 					className={`hero-phone-mockup ${mounted ? "animate-slide-in-right" : ""}`}
 					style={{
 						position: "relative",
 						opacity: mounted ? 1 : 0,
+						display: "flex",
 						alignItems: "center",
 						justifyContent: "center",
 						padding: "1rem",
 					}}
 				>
-					{/* Outer HUD Frame */}
+					{/* Main Life Vest + Phone Container */}
 					<div
 						style={{
 							position: "relative",
-							padding: "20px",
-							background: "rgba(6, 182, 212, 0.02)",
-							border: "1px solid rgba(6, 182, 212, 0.2)",
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
 						}}
 					>
-						{/* HUD Corner Brackets - Outer */}
-						<div
-							style={{
-								position: "absolute",
-								top: 0,
-								left: 0,
-								width: "30px",
-								height: "30px",
-								borderTop: "2px solid var(--brand-cyan)",
-								borderLeft: "2px solid var(--brand-cyan)",
-							}}
-						/>
-						<div
-							style={{
-								position: "absolute",
-								top: 0,
-								right: 0,
-								width: "30px",
-								height: "30px",
-								borderTop: "2px solid var(--brand-cyan)",
-								borderRight: "2px solid var(--brand-cyan)",
-							}}
-						/>
-						<div
-							style={{
-								position: "absolute",
-								bottom: 0,
-								left: 0,
-								width: "30px",
-								height: "30px",
-								borderBottom: "2px solid var(--brand-cyan)",
-								borderLeft: "2px solid var(--brand-cyan)",
-							}}
-						/>
-						<div
-							style={{
-								position: "absolute",
-								bottom: 0,
-								right: 0,
-								width: "30px",
-								height: "30px",
-								borderBottom: "2px solid var(--brand-cyan)",
-								borderRight: "2px solid var(--brand-cyan)",
-							}}
-						/>
-
-						{/* Phone Frame */}
+						{/* Life Vest Front - Large */}
 						<div
 							style={{
 								position: "relative",
-								width: "280px",
-								height: "560px",
-								background:
-									"linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
-								borderRadius: "36px",
-								padding: "6px",
-								border: "2px solid rgba(6, 182, 212, 0.4)",
-								boxShadow:
-									"0 0 40px rgba(6, 182, 212, 0.15), 0 20px 50px rgba(0, 0, 0, 0.5)",
+								zIndex: 1,
 							}}
 						>
-							{/* Screen */}
+							{/* HUD Frame around vest */}
 							<div
 								style={{
-									width: "100%",
-									height: "100%",
-									borderRadius: "30px",
-									background: "var(--brand-dark)",
-									overflow: "hidden",
+									position: "absolute",
+									top: "-10px",
+									left: "-10px",
+									width: "20px",
+									height: "20px",
+									borderTop: "2px solid var(--brand-orange)",
+									borderLeft: "2px solid var(--brand-orange)",
+								}}
+							/>
+							<div
+								style={{
+									position: "absolute",
+									top: "-10px",
+									right: "-10px",
+									width: "20px",
+									height: "20px",
+									borderTop: "2px solid var(--brand-orange)",
+									borderRight: "2px solid var(--brand-orange)",
+								}}
+							/>
+							<div
+								style={{
+									position: "absolute",
+									bottom: "-10px",
+									left: "-10px",
+									width: "20px",
+									height: "20px",
+									borderBottom: "2px solid var(--brand-orange)",
+									borderLeft: "2px solid var(--brand-orange)",
+								}}
+							/>
+							<div
+								style={{
+									position: "absolute",
+									bottom: "-10px",
+									right: "-10px",
+									width: "20px",
+									height: "20px",
+									borderBottom: "2px solid var(--brand-orange)",
+									borderRight: "2px solid var(--brand-orange)",
+								}}
+							/>
+							<img
+								src="/life-vest-front.png"
+								alt="NOAH Life Vest Front"
+								className="hero-life-vest-img"
+								style={{
+									width: "520px",
+									height: "auto",
+									filter: "drop-shadow(0 0 50px rgba(249, 115, 22, 0.5))",
+								}}
+							/>
+						</div>
+
+						{/* Compact Phone/Radar Mockup - Layered on top of vest, slightly to the right */}
+						<div
+							style={{
+								position: "absolute",
+								right: "-40px",
+								top: "50%",
+								transform: "translateY(-50%)",
+								zIndex: 3,
+							}}
+						>
+							{/* Outer HUD Frame */}
+							<div
+								style={{
 									position: "relative",
+									padding: "12px",
+									background: "rgba(6, 182, 212, 0.02)",
+									border: "1px solid rgba(6, 182, 212, 0.2)",
 								}}
 							>
-								{/* Map Background */}
+								{/* HUD Corner Brackets */}
 								<div
-									style={{ position: "absolute", inset: 0, opacity: 0.4 }}
+									style={{
+										position: "absolute",
+										top: 0,
+										left: 0,
+										width: "16px",
+										height: "16px",
+										borderTop: "2px solid var(--brand-cyan)",
+										borderLeft: "2px solid var(--brand-cyan)",
+									}}
+								/>
+								<div
+									style={{
+										position: "absolute",
+										top: 0,
+										right: 0,
+										width: "16px",
+										height: "16px",
+										borderTop: "2px solid var(--brand-cyan)",
+										borderRight: "2px solid var(--brand-cyan)",
+									}}
+								/>
+								<div
+									style={{
+										position: "absolute",
+										bottom: 0,
+										left: 0,
+										width: "16px",
+										height: "16px",
+										borderBottom: "2px solid var(--brand-cyan)",
+										borderLeft: "2px solid var(--brand-cyan)",
+									}}
+								/>
+								<div
+									style={{
+										position: "absolute",
+										bottom: 0,
+										right: 0,
+										width: "16px",
+										height: "16px",
+										borderBottom: "2px solid var(--brand-cyan)",
+										borderRight: "2px solid var(--brand-cyan)",
+									}}
+								/>
+
+								{/* Compact Phone Frame */}
+								<div
+									style={{
+										position: "relative",
+										width: "160px",
+										height: "320px",
+										background:
+											"linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
+										borderRadius: "24px",
+										padding: "4px",
+										border: "2px solid rgba(6, 182, 212, 0.4)",
+										boxShadow:
+											"0 0 30px rgba(6, 182, 212, 0.15), 0 15px 40px rgba(0, 0, 0, 0.5)",
+									}}
 								>
-									<img
-										src="/map-without-gps.png"
-										alt=""
+									{/* Screen */}
+									<div
 										style={{
 											width: "100%",
 											height: "100%",
-											objectFit: "cover",
-											filter:
-												"hue-rotate(180deg) saturate(0.5) brightness(0.8)",
-										}}
-									/>
-								</div>
-
-								{/* Radar Overlay */}
-								<div
-									style={{
-										position: "absolute",
-										inset: 0,
-										display: "flex",
-										alignItems: "center",
-										justifyContent: "center",
-									}}
-								>
-									{/* Radar Circles */}
-									<div
-										style={{
+											borderRadius: "20px",
+											background: "var(--brand-dark)",
+											overflow: "hidden",
 											position: "relative",
-											width: "220px",
-											height: "220px",
 										}}
 									>
-										{[100, 75, 50, 25].map((size, i) => (
-											<div
-												key={size}
-												style={{
-													position: "absolute",
-													top: `${50 - size / 2}%`,
-													left: `${50 - size / 2}%`,
-													width: `${size}%`,
-													height: `${size}%`,
-													border: `1px solid rgba(6, 182, 212, ${0.5 - i * 0.1})`,
-													borderRadius: "50%",
-												}}
-											/>
-										))}
-
-										{/* Rotating Sweep - Properly Centered */}
+										{/* Map Background */}
 										<div
-											className="animate-spin-slow"
 											style={{
 												position: "absolute",
-												top: 0,
-												left: 0,
-												right: 0,
-												bottom: 0,
-												transformOrigin: "center center",
+												inset: 0,
+												opacity: 0.4,
 											}}
 										>
-											{/* Sweep Line - from center outward */}
-											<div
+											<img
+												src="/map-without-gps.png"
+												alt=""
 												style={{
-													position: "absolute",
-													top: "50%",
-													left: "50%",
-													width: "2px",
-													height: "50%",
-													transformOrigin: "top center",
-													transform: "translateX(-50%)",
-													background:
-														"linear-gradient(to bottom, transparent, var(--brand-cyan))",
-												}}
-											/>
-											{/* Sweep Cone - Circular */}
-											<div
-												style={{
-													position: "absolute",
-													top: 0,
-													left: 0,
-													right: 0,
-													bottom: 0,
-													background:
-														"conic-gradient(from 0deg at 50% 50%, rgba(6, 182, 212, 0.4) 0deg, rgba(6, 182, 212, 0.1) 40deg, transparent 60deg, transparent 360deg)",
-													borderRadius: "50%",
-													clipPath: "circle(50% at 50% 50%)",
+													width: "100%",
+													height: "100%",
+													objectFit: "cover",
+													filter:
+														"hue-rotate(180deg) saturate(0.5) brightness(0.8)",
 												}}
 											/>
 										</div>
 
-										{/* Center Dot (User) */}
+										{/* Radar Overlay */}
 										<div
 											style={{
 												position: "absolute",
-												top: "50%",
-												left: "50%",
-												transform: "translate(-50%, -50%)",
-											}}
-										>
-											<div
-												style={{
-													width: "14px",
-													height: "14px",
-													borderRadius: "50%",
-													background: "var(--brand-orange)",
-													boxShadow: "0 0 25px rgba(249, 115, 22, 0.9)",
-												}}
-											/>
-											<div
-												className="animate-ping-slow"
-												style={{
-													position: "absolute",
-													inset: "-10px",
-													borderRadius: "50%",
-													background: "var(--brand-orange)",
-													opacity: 0.3,
-												}}
-											/>
-										</div>
-
-										{/* Nearby Points */}
-										{[
-											{
-												top: "22%",
-												left: "62%",
-												color: "var(--brand-success)",
-											},
-											{
-												top: "38%",
-												left: "22%",
-												color: "var(--brand-success)",
-											},
-											{
-												top: "72%",
-												left: "68%",
-												color: "var(--brand-cyan)",
-											},
-										].map((point, i) => (
-											<div
-												key={`point-${i}`}
-												className="animate-pulse-slow"
-												style={{
-													position: "absolute",
-													top: point.top,
-													left: point.left,
-													width: "8px",
-													height: "8px",
-													borderRadius: "50%",
-													background: point.color,
-													boxShadow: `0 0 12px ${point.color}`,
-													animationDelay: `${i * 0.5}s`,
-												}}
-											/>
-										))}
-									</div>
-								</div>
-
-								{/* HUD Elements - Enhanced */}
-								<div
-									style={{
-										position: "absolute",
-										top: "14px",
-										left: "14px",
-										fontFamily: "monospace",
-										fontSize: "0.55rem",
-										color: "var(--brand-cyan)",
-									}}
-								>
-									<div style={{ marginBottom: "2px" }}>
-										{t.hud.gpsModule}
-									</div>
-									<div>{t.hud.lat}</div>
-									<div>{t.hud.lon}</div>
-									<div>{t.hud.alt}</div>
-									<div
-										style={{
-											marginTop: "4px",
-											color: "var(--brand-success)",
-										}}
-									>
-										{t.hud.signalActive}
-									</div>
-									<div style={{ color: "var(--brand-success)" }}>
-										{t.hud.satCount}
-									</div>
-								</div>
-
-								<div
-									style={{
-										position: "absolute",
-										top: "14px",
-										right: "14px",
-										fontFamily: "monospace",
-										fontSize: "0.55rem",
-										color: "var(--brand-orange)",
-										textAlign: "right",
-									}}
-								>
-									<div style={{ marginBottom: "2px" }}>
-										{t.hud.scanData}
-									</div>
-									<div>{t.hud.range}</div>
-									<div>{t.hud.units}</div>
-									<div>{t.hud.freqShort}</div>
-									<div style={{ marginTop: "4px" }}>{t.hud.powerShort}</div>
-								</div>
-
-								{/* Crosshairs */}
-								<div
-									style={{
-										position: "absolute",
-										top: "50%",
-										left: "10px",
-										right: "10px",
-										height: "1px",
-										background:
-											"linear-gradient(90deg, var(--brand-cyan), transparent 20%, transparent 80%, var(--brand-cyan))",
-										opacity: 0.3,
-									}}
-								/>
-								<div
-									style={{
-										position: "absolute",
-										left: "50%",
-										top: "100px",
-										bottom: "100px",
-										width: "1px",
-										background:
-											"linear-gradient(180deg, var(--brand-cyan), transparent 20%, transparent 80%, var(--brand-cyan))",
-										opacity: 0.3,
-									}}
-								/>
-
-								{/* Distance markers */}
-								<div
-									style={{
-										position: "absolute",
-										top: "50%",
-										left: "25%",
-										transform: "translate(-50%, -50%)",
-										fontFamily: "monospace",
-										fontSize: "0.45rem",
-										color: "var(--brand-cyan)",
-										opacity: 0.5,
-									}}
-								>
-									1KM
-								</div>
-								<div
-									style={{
-										position: "absolute",
-										top: "50%",
-										left: "15%",
-										transform: "translate(-50%, -50%)",
-										fontFamily: "monospace",
-										fontSize: "0.45rem",
-										color: "var(--brand-cyan)",
-										opacity: 0.5,
-									}}
-								>
-									2KM
-								</div>
-
-								{/* Notification Card */}
-								<div
-									style={{
-										position: "absolute",
-										bottom: "70px",
-										left: "10px",
-										right: "10px",
-										background: "rgba(15, 23, 42, 0.95)",
-										backdropFilter: "blur(10px)",
-										border: "1px solid rgba(16, 185, 129, 0.4)",
-										padding: "10px 12px",
-									}}
-								>
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											gap: "8px",
-										}}
-									>
-										<div className="status-dot status-active" />
-										<span
-											style={{
-												fontSize: "0.7rem",
-												color: "var(--brand-success)",
-												fontFamily: "monospace",
-											}}
-										>
-											{t.badges.rescueTeam}
-										</span>
-									</div>
-								</div>
-
-								{/* Bottom Nav */}
-								<div
-									style={{
-										position: "absolute",
-										bottom: "14px",
-										left: "10px",
-										right: "10px",
-										display: "flex",
-										justifyContent: "space-around",
-										background: "rgba(15, 23, 42, 0.9)",
-										borderRadius: "16px",
-										padding: "8px",
-									}}
-								>
-									{["📍", "🆘", "📞"].map((icon, i) => (
-										<div
-											key={icon}
-											style={{
-												width: "36px",
-												height: "36px",
-												borderRadius: "50%",
-												background:
-													i === 1
-														? "var(--brand-alert)"
-														: "rgba(6, 182, 212, 0.2)",
+												inset: 0,
 												display: "flex",
 												alignItems: "center",
 												justifyContent: "center",
-												fontSize: "0.9rem",
-												boxShadow:
-													i === 1
-														? "0 0 20px rgba(239, 68, 68, 0.5)"
-														: "none",
 											}}
 										>
-											{icon}
+											{/* Radar Circles */}
+											<div
+												style={{
+													position: "relative",
+													width: "120px",
+													height: "120px",
+												}}
+											>
+												{[100, 75, 50, 25].map((size, i) => (
+													<div
+														key={size}
+														style={{
+															position: "absolute",
+															top: `${50 - size / 2}%`,
+															left: `${50 - size / 2}%`,
+															width: `${size}%`,
+															height: `${size}%`,
+															border: `1px solid rgba(6, 182, 212, ${0.5 - i * 0.1})`,
+															borderRadius: "50%",
+														}}
+													/>
+												))}
+
+												{/* Rotating Sweep */}
+												<div
+													className="animate-spin-slow"
+													style={{
+														position: "absolute",
+														top: 0,
+														left: 0,
+														right: 0,
+														bottom: 0,
+														transformOrigin: "center center",
+													}}
+												>
+													<div
+														style={{
+															position: "absolute",
+															top: "50%",
+															left: "50%",
+															width: "2px",
+															height: "50%",
+															transformOrigin: "top center",
+															transform: "translateX(-50%)",
+															background:
+																"linear-gradient(to bottom, transparent, var(--brand-cyan))",
+														}}
+													/>
+													<div
+														style={{
+															position: "absolute",
+															top: 0,
+															left: 0,
+															right: 0,
+															bottom: 0,
+															background:
+																"conic-gradient(from 0deg at 50% 50%, rgba(6, 182, 212, 0.4) 0deg, rgba(6, 182, 212, 0.1) 40deg, transparent 60deg, transparent 360deg)",
+															borderRadius: "50%",
+															clipPath: "circle(50% at 50% 50%)",
+														}}
+													/>
+												</div>
+
+												{/* Center Dot (User) */}
+												<div
+													style={{
+														position: "absolute",
+														top: "50%",
+														left: "50%",
+														transform: "translate(-50%, -50%)",
+													}}
+												>
+													<div
+														style={{
+															width: "10px",
+															height: "10px",
+															borderRadius: "50%",
+															background: "var(--brand-orange)",
+															boxShadow: "0 0 20px rgba(249, 115, 22, 0.9)",
+														}}
+													/>
+													<div
+														className="animate-ping-slow"
+														style={{
+															position: "absolute",
+															inset: "-8px",
+															borderRadius: "50%",
+															background: "var(--brand-orange)",
+															opacity: 0.3,
+														}}
+													/>
+												</div>
+
+												{/* Nearby Points */}
+												{[
+													{
+														top: "22%",
+														left: "62%",
+														color: "var(--brand-success)",
+													},
+													{
+														top: "72%",
+														left: "68%",
+														color: "var(--brand-cyan)",
+													},
+												].map((point, i) => (
+													<div
+														key={`point-${i}`}
+														className="animate-pulse-slow"
+														style={{
+															position: "absolute",
+															top: point.top,
+															left: point.left,
+															width: "6px",
+															height: "6px",
+															borderRadius: "50%",
+															background: point.color,
+															boxShadow: `0 0 10px ${point.color}`,
+															animationDelay: `${i * 0.5}s`,
+														}}
+													/>
+												))}
+											</div>
 										</div>
-									))}
-								</div>
-							</div>
-						</div>
 
-						{/* Feature Badges - Repositioned (Hidden on mobile) */}
-						<div
-							className="hide-mobile"
-							style={{
-								position: "absolute",
-								top: "8%",
-								left: "-140px",
-								padding: "0.6rem 1rem",
-								background: "rgba(15, 23, 42, 0.9)",
-								backdropFilter: "blur(10px)",
-								border: "1px solid rgba(16, 185, 129, 0.3)",
-								borderLeft: "3px solid var(--brand-success)",
-								display: "flex",
-								alignItems: "center",
-								gap: "0.6rem",
-							}}
-						>
-							<div
-								style={{
-									width: "32px",
-									height: "32px",
-									background:
-										"linear-gradient(135deg, var(--brand-success), var(--brand-success)88)",
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "center",
-									fontSize: "0.9rem",
-								}}
-							>
-								📍
-							</div>
-							<div>
-								<div
-									style={{
-										fontWeight: 600,
-										fontSize: "0.75rem",
-										color: "var(--text-primary)",
-									}}
-								>
-									{t.badges.gps}
-								</div>
-								<div
-									style={{
-										fontSize: "0.65rem",
-										color: "var(--text-muted)",
-									}}
-								>
-									{t.badges.gpsDesc}
-								</div>
-							</div>
-						</div>
+										{/* Mini HUD Elements */}
+										<div
+											style={{
+												position: "absolute",
+												top: "8px",
+												left: "8px",
+												fontFamily: "monospace",
+												fontSize: "0.45rem",
+												color: "var(--brand-cyan)",
+											}}
+										>
+											<div>{t.hud.gpsModule}</div>
+											<div
+												style={{
+													color: "var(--brand-success)",
+													marginTop: "2px",
+												}}
+											>
+												{t.hud.signalActive}
+											</div>
+										</div>
 
-						<div
-							className="hide-mobile"
-							style={{
-								position: "absolute",
-								top: "40%",
-								right: "-130px",
-								padding: "0.6rem 1rem",
-								background: "rgba(15, 23, 42, 0.9)",
-								backdropFilter: "blur(10px)",
-								border: "1px solid rgba(6, 182, 212, 0.3)",
-								borderLeft: "3px solid var(--brand-cyan)",
-								display: "flex",
-								alignItems: "center",
-								gap: "0.6rem",
-							}}
-						>
-							<div
-								style={{
-									width: "32px",
-									height: "32px",
-									background:
-										"linear-gradient(135deg, var(--brand-cyan), var(--brand-cyan)88)",
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "center",
-									fontSize: "0.9rem",
-								}}
-							>
-								💧
-							</div>
-							<div>
-								<div
-									style={{
-										fontWeight: 600,
-										fontSize: "0.75rem",
-										color: "var(--text-primary)",
-									}}
-								>
-									{t.badges.water}
-								</div>
-								<div
-									style={{
-										fontSize: "0.65rem",
-										color: "var(--text-muted)",
-									}}
-								>
-									{t.badges.waterDesc}
-								</div>
-							</div>
-						</div>
+										{/* Notification Card */}
+										<div
+											style={{
+												position: "absolute",
+												bottom: "45px",
+												left: "6px",
+												right: "6px",
+												background: "rgba(15, 23, 42, 0.95)",
+												backdropFilter: "blur(10px)",
+												border: "1px solid rgba(16, 185, 129, 0.4)",
+												padding: "6px 8px",
+											}}
+										>
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													gap: "6px",
+												}}
+											>
+												<div className="status-dot status-active" />
+												<span
+													style={{
+														fontSize: "0.55rem",
+														color: "var(--brand-success)",
+														fontFamily: "monospace",
+													}}
+												>
+													{t.badges.rescueTeam}
+												</span>
+											</div>
+										</div>
 
-						<div
-							className="hide-mobile"
-							style={{
-								position: "absolute",
-								bottom: "15%",
-								left: "-120px",
-								padding: "0.6rem 1rem",
-								background: "rgba(15, 23, 42, 0.9)",
-								backdropFilter: "blur(10px)",
-								border: "1px solid rgba(239, 68, 68, 0.3)",
-								borderLeft: "3px solid var(--brand-alert)",
-								display: "flex",
-								alignItems: "center",
-								gap: "0.6rem",
-							}}
-						>
-							<div
-								style={{
-									width: "32px",
-									height: "32px",
-									background:
-										"linear-gradient(135deg, var(--brand-alert), var(--brand-alert)88)",
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "center",
-									fontSize: "0.9rem",
-								}}
-							>
-								🆘
-							</div>
-							<div>
-								<div
-									style={{
-										fontWeight: 600,
-										fontSize: "0.75rem",
-										color: "var(--text-primary)",
-									}}
-								>
-									{t.badges.sos}
-								</div>
-								<div
-									style={{
-										fontSize: "0.65rem",
-										color: "var(--text-muted)",
-									}}
-								>
-									{t.badges.sosDesc}
+										{/* Bottom Nav */}
+										<div
+											style={{
+												position: "absolute",
+												bottom: "8px",
+												left: "6px",
+												right: "6px",
+												display: "flex",
+												justifyContent: "space-around",
+												background: "rgba(15, 23, 42, 0.9)",
+												borderRadius: "12px",
+												padding: "5px",
+											}}
+										>
+											{["📍", "🆘", "📞"].map((icon, i) => (
+												<div
+													key={icon}
+													style={{
+														width: "24px",
+														height: "24px",
+														borderRadius: "50%",
+														background:
+															i === 1
+																? "var(--brand-alert)"
+																: "rgba(6, 182, 212, 0.2)",
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
+														fontSize: "0.65rem",
+														boxShadow:
+															i === 1
+																? "0 0 15px rgba(239, 68, 68, 0.5)"
+																: "none",
+													}}
+												>
+													{icon}
+												</div>
+											))}
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-
-						{/* Tech Specs Tags - Bottom Right */}
-						<div
-							style={{
-								position: "absolute",
-								bottom: "-60px",
-								right: "0",
-								display: "flex",
-								gap: "0.5rem",
-								flexWrap: "wrap",
-								justifyContent: "flex-end",
-								maxWidth: "250px",
-							}}
-						>
-							{["IP68", "GPS", "72H", "SOS"].map((tag, i) => (
-								<span
-									key={tag}
-									style={{
-										padding: "0.35rem 0.7rem",
-										background: "rgba(6, 182, 212, 0.1)",
-										border: "1px solid rgba(6, 182, 212, 0.3)",
-										fontSize: "0.6rem",
-										fontWeight: 600,
-										color: "var(--brand-cyan)",
-										fontFamily: "monospace",
-										letterSpacing: "0.08em",
-										opacity: mounted ? 1 : 0,
-										transition: `opacity 0.5s ease ${0.2 + i * 0.1}s`,
-									}}
-								>
-									{tag}
-								</span>
-							))}
 						</div>
 					</div>
 				</div>
