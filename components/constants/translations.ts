@@ -12,8 +12,7 @@ export const translations = {
 			tagline: "Kit Cứu Hộ Khẩn Cấp",
 			title1: "Đừng Để",
 			title2: "Quá Muộn",
-			subtitle:
-				"Mỗi năm, hàng trăm người Việt Nam mất mạng vì lũ lụt. Đừng để gia đình bạn trở thành con số thống kê tiếp theo.",
+			subtitle: "Mỗi năm, hàng trăm người Việt Nam mất mạng vì lũ lụt.",
 			description:
 				"Chúng tôi đang phát triển bộ kit sinh tồn thế kỷ 21 — nhẹ, đa năng, sẵn sàng cho cộng đồng, và được thiết kế để giúp người dùng an toàn, dễ nhìn thấy, và sống sót trong lũ lụt nghiêm trọng.",
 			cta: "Tìm hiểu ngay",
@@ -279,7 +278,7 @@ export const translations = {
 			title1: "Don't Let",
 			title2: "It Be Too Late",
 			subtitle:
-				"Every year, hundreds of Vietnamese lose their lives to floods. Don't let your family become the next statistic.",
+				"Every year, hundreds of Vietnamese lose their lives to floods.",
 			description:
 				"We are developing a 21st-century survival kit — lightweight, multi-functional, community-ready, and designed to help users stay safe, visible, and alive during severe flooding.",
 			cta: "Learn More",
